@@ -97,7 +97,7 @@ public class Utils {
         List<Coordinate> neighbors = new ArrayList<>();
         int[] xs = {1,1,1,0,0,-1,-1,-1};
         int[] ys = {1,0,-1,1,-1,1,0,-1};
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < xs.length; i++) {
             int nx = x + xs[i];
             int ny = y + ys[i];
             if (safe(nx, ny, grid)) {
