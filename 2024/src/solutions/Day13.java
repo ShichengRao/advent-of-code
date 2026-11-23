@@ -9,15 +9,8 @@ public class Day13 extends DayTemplate {
 
     public String solve(boolean part1, Scanner in) {
         long answer = 0;
-        while (in.hasNext()) {
-            String[] tmp = new String[3];
-            for(int i = 0; i < 3; i++){
-                tmp[i] = in.nextLine();
-            }
-            answer+=helper(tmp, part1);
-            if(in.hasNext()){
-                in.nextLine();
-            }
+        for (List<String> machine : readSections(in)) {
+            answer+=helper(machine, part1);
         }
         return answer+"";
     }
@@ -60,16 +53,16 @@ public class Day13 extends DayTemplate {
         return a * 3 + b;
     }
 
-    private long helper(String[] lines, boolean part1){
-        String[] first =  lines[0].split("[,+]");
-        String[] second = lines[1].split("[,+]");
-        String[] third = lines[2].split("[,=]");
-        long x3 = 10000000000000L + Integer.parseInt(third[1]);
-        long y3 = 10000000000000L + Integer.parseInt(third[3]);
+    private long helper(List<String> lines, boolean part1){
+        long[] first = longs(lines.get(0));
+        long[] second = longs(lines.get(1));
+        long[] third = longs(lines.get(2));
+        long x3 = 10000000000000L + third[0];
+        long y3 = 10000000000000L + third[1];
         if(part1){
-            x3 = Integer.parseInt(third[1]);
-            y3 = Integer.parseInt(third[3]);
+            x3 = third[0];
+            y3 = third[1];
         }
-        return oneCycle(Integer.parseInt(first[1]), Integer.parseInt(first[3]), Integer.parseInt(second[1]), Integer.parseInt(second[3]), x3, y3);
+        return oneCycle(first[0], first[1], second[0], second[1], x3, y3);
     }
 }

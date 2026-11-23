@@ -3,14 +3,16 @@ import src.meta.DayTemplate;
 
 import java.util.*;
 
+import static src.meta.Utils.*;
+
 public class Day14 extends DayTemplate {
     public String solve(boolean part1, Scanner in) {
         long answer = 0;
         List<Robot> robots = new ArrayList<>();
         while(in.hasNext()){
             String line = in.nextLine();
-            String[] parts = line.split(" |,|=");
-            robots.add(new Robot(Integer.parseInt(parts[1]),Integer.parseInt(parts[2]), Integer.parseInt(parts[4]), Integer.parseInt(parts[5])));
+            int[] parts = ints(line);
+            robots.add(new Robot(parts[0], parts[1], parts[2], parts[3]));
         }
 
         if(part1){

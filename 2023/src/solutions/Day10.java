@@ -2,6 +2,7 @@ package src.solutions;
 
 import src.meta.DayTemplate;
 import src.objects.Coordinate;
+import src.objects.Direction;
 
 import java.util.*;
 
@@ -76,14 +77,12 @@ public class Day10 extends DayTemplate {
     private void floodFill() {
         List<Coordinate> pointsToCheck = new ArrayList<>();
         pointsToCheck.add(new Coordinate(0, 0));
-        int[] xs = {-1, 1, 0, 0};
-        int[] ys = {0, 0, -1, 1};
         while (!pointsToCheck.isEmpty()) {
             List<Coordinate> tmp = new ArrayList<>();
             for (Coordinate point : pointsToCheck) {
-                for (int k = 0; k < 4; k++) {
-                    int newx = point.x + xs[k];
-                    int newy = point.y + ys[k];
+                for (Direction direction : Direction.values()) {
+                    int newx = point.x + direction.dx;
+                    int newy = point.y + direction.dy;
                     if (newx >= 0 && newy >= 0 && newx < distances.length && newy < distances[0].length && distances[newx][newy] == 2) {
                         distances[newx][newy] = 0;
                         tmp.add(new Coordinate(newx, newy));

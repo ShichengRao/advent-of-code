@@ -2,6 +2,7 @@ package src.solutions;
 
 import src.meta.DayTemplate;
 import src.objects.Coordinate;
+import src.objects.Direction;
 
 import java.util.*;
 
@@ -32,15 +33,13 @@ public class Day23 extends DayTemplate {
                 }
             }
         }
-        int[] xs = {1, 0, -1, 0};
-        int[] ys = {0, 1, 0, -1};
         Set<Coordinate> intersections = new HashSet<>();
         for (int i = 0; i < grid.length; i++) {
             for (int j = 0; j < grid[0].length; j++) {
                 int numNeighbors = 0;
                 if (grid[i][j] != 2) {
-                    for (int k = 0; k < 4; k++) {
-                        Coordinate next = new Coordinate(i + xs[k], j + ys[k]);
+                    for (Direction direction : Direction.values()) {
+                        Coordinate next = new Coordinate(i + direction.dx, j + direction.dy);
                         if (next.x >= 0 && next.y >= 0 && next.x < grid.length && next.y < grid[0].length && grid[next.x][next.y] != 2) {
                             numNeighbors++;
                         }
@@ -303,19 +302,17 @@ public class Day23 extends DayTemplate {
     }
 
     private void bfs(Coordinate start, Map<Coordinate, Set<Coordinate>> neighbors, int[][] grid, Set<Coordinate> intersections) {
-        int[] xs = {1, 0, -1, 0};
-        int[] ys = {0, 1, 0, -1};
         Queue<Coordinate> queue = new LinkedList<>();
         Set<Coordinate> visited = new HashSet<>();
         queue.add(start);
         neighbors.putIfAbsent(start, new HashSet<>());
         while (!queue.isEmpty()) {
             Coordinate curr = queue.poll();
-            for (int k = 0; k < 4; k++) {
-                if (grid[curr.x][curr.y] > 2 && k != grid[curr.x][curr.y] - 3) {
+            for (Direction direction : Direction.values()) {
+                if (grid[curr.x][curr.y] > 2 && direction != Direction.of(">v<^".charAt(grid[curr.x][curr.y] - 3))) {
                     continue;
                 }
-                Coordinate next = new Coordinate(curr.x + xs[k], curr.y + ys[k]);
+                Coordinate next = curr.move(direction);
                 if (next.x >= 0 && next.y >= 0 && next.x < grid.length && next.y < grid[0].length && !visited.contains(next)) {
                     next.weight = curr.weight + 1;
                     if (intersections.contains(next) && !next.equals(start)) {

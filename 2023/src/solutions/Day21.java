@@ -1,9 +1,9 @@
 package src.solutions;
 
 import src.meta.DayTemplate;
+import src.meta.Utils;
 import src.objects.Coordinate;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -21,26 +21,17 @@ public class Day21 extends DayTemplate {
      */
     public String solve(boolean part1, Scanner in) {
         long answer = 0;
-        List<Coordinate> reachablePoints = new ArrayList<>();
-        reachablePoints.add(buildGridAndGetStart(in));
-        int[] xs = {-1, 1, 0, 0};
-        int[] ys = {0, 0, -1, 1};
-        int index = 0;
-        while (index < (part1 ? 64 : grid.length)) {
-            index++;
-            List<Coordinate> tmp2 = new ArrayList<>();
-            for (Coordinate c : reachablePoints) {
-                for (int i = 0; i < 4; i++) {
-                    int newx = c.x + xs[i];
-                    int newy = c.y + ys[i];
-                    if (newx >= 0 && newy >= 0 && newx < grid.length && newy < grid[0].length && grid[newx][newy] == 9999) {
-                        Coordinate candidate = new Coordinate(newx, newy);
-                        tmp2.add(candidate);
-                        grid[newx][newy] = index;
-                    }
+        List<String> lines = Utils.readLines(in);
+        grid = Utils.buildGrid(lines, c -> c == '#' ? -1 : 9999);
+        Coordinate start = Utils.find(lines, 'S');
+        int[][] distances = Utils.distances(grid, start, value -> value != -1);
+        int limit = part1 ? 64 : grid.length;
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid[0].length; j++) {
+                if (distances[i][j] != -1 && distances[i][j] <= limit) {
+                    grid[i][j] = distances[i][j];
                 }
             }
-            reachablePoints = tmp2;
         }
         if (part1) {
             answer = solvePart1();
@@ -49,29 +40,6 @@ public class Day21 extends DayTemplate {
             answer = solvePart2();
         }
         return answer + "";
-    }
-
-    private Coordinate buildGridAndGetStart(Scanner in){
-        List<String[]> tmp = new ArrayList<>();
-        while (in.hasNext()) {
-            String line = in.nextLine();
-            tmp.add(line.split(""));
-        }
-        int x = 0;
-        int y = 0;
-        grid = new int[tmp.get(0).length][tmp.size()];
-        for (int i = 0; i < grid.length; i++) {
-            for (int j = 0; j < grid[0].length; j++) {
-                if (tmp.get(j)[i].equals("S")) {
-                    x = i;
-                    y = j;
-                    grid[i][j] = 0;
-                } else {
-                    grid[i][j] = tmp.get(j)[i].equals("#") ? -1 : 9999;
-                }
-            }
-        }
-        return new Coordinate(x,y);
     }
 
     private long solvePart1(){

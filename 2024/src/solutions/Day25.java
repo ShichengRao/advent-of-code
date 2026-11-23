@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import static src.meta.Utils.readSections;
+
 public class Day25 extends DayTemplate {
 
     public String solve(boolean part1, Scanner in){
@@ -13,22 +15,7 @@ public class Day25 extends DayTemplate {
             return "Merry Christmas!";
         }
         long answer = 0;
-        List<String> grid = new ArrayList<>();
-        List<List<String>> grids = new ArrayList<>();
-        while(in.hasNext()){
-            String line = in.nextLine();
-            if(line.isEmpty()){
-                grids.add(grid);
-                grid = new ArrayList<>();
-            }
-            else{
-                grid.add(line);
-            }
-        }
-
-        if(!grid.isEmpty()){
-            grids.add(grid);
-        }
+        List<List<String>> grids = readSections(in);
 
         List<int[]> locks = new ArrayList<>();
         List<int[]> keys = new ArrayList<>();

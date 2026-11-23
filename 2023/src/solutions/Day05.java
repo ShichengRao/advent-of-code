@@ -1,6 +1,7 @@
 package src.solutions;
 
 import src.meta.DayTemplate;
+import src.meta.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,28 +32,16 @@ public class Day05 extends DayTemplate {
     }
 
     private void initialize(Scanner in){
-        List<Range> tmp = new ArrayList<>();
         rangeMaps = new ArrayList<>();
-        String[] stringSeeds = in.nextLine().split(" ");
-        seeds = new long[stringSeeds.length - 1];
-        for (int i = 1; i < stringSeeds.length; i++) {
-            seeds[i - 1] = Long.parseLong(stringSeeds[i]);
-        }
-        while (in.hasNext()) {
-            String line = in.nextLine();
-            if (line.equals("")) {
-                continue;
-            }
-            if (line.contains("map")) {
-                if (!tmp.isEmpty()) {
-                    rangeMaps.add(new RangeMap(tmp));
-                }
-                tmp = new ArrayList<>();
-            } else {
+        List<List<String>> sections = Utils.readSections(in);
+        seeds = Utils.longs(sections.get(0).get(0));
+        for (List<String> section : sections.subList(1, sections.size())) {
+            List<Range> tmp = new ArrayList<>();
+            for (String line : section.subList(1, section.size())) {
                 tmp.add(new Range(line));
             }
+            rangeMaps.add(new RangeMap(tmp));
         }
-        rangeMaps.add(new RangeMap(tmp));
     }
 
     private long solvePart1(){
@@ -106,10 +95,10 @@ class Range {
     }
 
     public Range(String line) {
-        String[] pieces = line.split(" ");
-        destination = Long.parseLong(pieces[0]);
-        source = Long.parseLong(pieces[1]);
-        specificRange = Long.parseLong(pieces[2]);
+        long[] numbers = Utils.longs(line);
+        destination = numbers[0];
+        source = numbers[1];
+        specificRange = numbers[2];
     }
 }
 

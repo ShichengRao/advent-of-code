@@ -1,6 +1,7 @@
 package src.solutions;
 
 import src.meta.DayTemplate;
+import src.meta.Utils;
 
 import java.util.*;
 
@@ -75,21 +76,15 @@ public class Day19 extends DayTemplate {
     }
 
     private void parse(Scanner in) {
-        boolean workflow = true;
         workflows = new HashMap<>();
         parts = new ArrayList<>();
-        while (in.hasNext()) {
-            String line = in.nextLine();
-            if (line.equals("")) {
-                workflow = false;
-            } else {
-                if (workflow) {
-                    String[] pieces = line.split("[{}]");
-                    workflows.put(pieces[0], new Workflow(pieces[1]));
-                } else {
-                    parts.add(new Part(line));
-                }
-            }
+        List<List<String>> sections = Utils.readSections(in);
+        for (String line : sections.get(0)) {
+            String[] pieces = line.split("[{}]");
+            workflows.put(pieces[0], new Workflow(pieces[1]));
+        }
+        for (String line : sections.get(1)) {
+            parts.add(new Part(line));
         }
     }
 }

@@ -2,15 +2,13 @@ package src.solutions;
 
 import src.meta.DayTemplate;
 import src.objects.Coordinate;
+import src.objects.Direction;
 
 import java.util.*;
 
 import static src.meta.Utils.*;
 
 public class Day16 extends DayTemplate {
-
-    int[] xs = {0, 1, 0, -1};
-    int[] ys = {1, 0, -1, 0};
 
     public String solve(boolean part1, Scanner in) {
         long answer = 0;
@@ -19,29 +17,9 @@ public class Day16 extends DayTemplate {
             String line = in.nextLine();
             lines.add(line);
         }
-        int[][] grid = new int[lines.size()][lines.get(0).length()];
-        Coordinate reindeer = new Coordinate(-1,-1);
-        Coordinate exit = new Coordinate(-1,-1);
-
-        for(int i = 0 ; i < grid.length; i++){
-            for(int j = 0; j < grid[0].length; j++){
-                char c = lines.get(i).charAt(j);
-                if(c == 'S'){
-                    reindeer = new Coordinate(i,j);
-                    grid[i][j] = 1;
-                }
-                if(c == 'E'){
-                    exit = new Coordinate(i,j);
-                    grid[i][j] = 1;
-                }
-                if(c == '#'){
-                    grid[i][j] = 2;
-                }
-                if(c == '.'){
-                    grid[i][j] = 1;
-                }
-            }
-        }
+        int[][] grid = buildGrid(lines, c -> c == '#' ? 2 : 1);
+        Coordinate reindeer = find(lines, 'S');
+        Coordinate exit = find(lines, 'E');
 
         if(part1){
             answer = bfs(grid, reindeer, exit);
@@ -69,14 +47,14 @@ public class Day16 extends DayTemplate {
         bestSeats[reindeer.x][reindeer.y] = 1;
         int deltax = 0;
         int deltay = 0;
-        int direction = 0;
+        Direction direction = Direction.RIGHT;
         for(char c: path.toCharArray()){
             if(c == 'R'){
-                direction = (direction + 1)%4;
+                direction = direction.turnRight();
             }
             else{
-                deltax += xs[direction];
-                deltay += ys[direction];
+                deltax += direction.dx;
+                deltay += direction.dy;
                 bestSeats[reindeer.x + deltax][reindeer.y + deltay] = 1;
             }
         }
@@ -85,39 +63,39 @@ public class Day16 extends DayTemplate {
     private long bfs(int[][] grid, Coordinate reindeer, Coordinate exit){
         long answer = Long.MAX_VALUE;
         Queue<String> queue = new PriorityQueue<>();
-        queue.add(reindeer.x + " " + reindeer.y + " " + 0 + " " + 0 + " S");
+        queue.add(reindeer.x + " " + reindeer.y + " " + Direction.RIGHT.name() + " " + 0 + " S");
         Map<String, Integer> cache = new HashMap<>();
         while(!queue.isEmpty()){
             String element = queue.poll();
             String[] parts = element.split(" ");
             int x = Integer.parseInt(parts[0]);
             int y = Integer.parseInt(parts[1]);
-            int direction = Integer.parseInt(parts[2]);
+            Direction direction = Direction.valueOf(parts[2]);
             int current = Integer.parseInt(parts[3]);
             String currentPath = parts[4];
             if(x == exit.x && y == exit.y){
                 answer = Math.min(answer, current);
             }
             else{
-                int newx = x + xs[direction];
-                int newy = y + ys[direction];
+                int newx = x + direction.dx;
+                int newy = y + direction.dy;
                 if(safe(newx, newy, grid) && grid[newx][newy] != 2) {
                     Coordinate newReindeer = new Coordinate(newx, newy);
-                    String newHash = newReindeer.x + " " + newReindeer.y + " " + direction + " " + (current + 1) + " " + currentPath + "F";
-                    if((cache.getOrDefault(newReindeer.x + " " + newReindeer.y + " " + direction, Integer.MAX_VALUE) > current + 1)){
+                    String newHash = newReindeer.x + " " + newReindeer.y + " " + direction.name() + " " + (current + 1) + " " + currentPath + "F";
+                    if((cache.getOrDefault(newReindeer.x + " " + newReindeer.y + " " + direction.name(), Integer.MAX_VALUE) > current + 1)){
                         queue.add(newHash);
-                        cache.put(newReindeer.x + " " + newReindeer.y + " " + direction, current + 1);
+                        cache.put(newReindeer.x + " " + newReindeer.y + " " + direction.name(), current + 1);
                     }
                 }
-                String right = x + " " + y + " " + ((direction + 1) % 4) + " " + (current + 1000) + " " + currentPath + "R";
-                if((cache.getOrDefault(x + " " + y + " " + ((direction + 1) % 4), Integer.MAX_VALUE) > current + 1000) && !currentPath.endsWith("RRR")){
+                String right = x + " " + y + " " + direction.turnRight().name() + " " + (current + 1000) + " " + currentPath + "R";
+                if((cache.getOrDefault(x + " " + y + " " + direction.turnRight().name(), Integer.MAX_VALUE) > current + 1000) && !currentPath.endsWith("RRR")){
                     queue.add(right);
-                    cache.put(x + " " + y + " " + ((direction + 1) % 4), current + 1000);
+                    cache.put(x + " " + y + " " + direction.turnRight().name(), current + 1000);
                 }
-                String right3 = x + " " + y + " " + ((direction + 3) % 4) + " " + (current + 1000) + " "+ currentPath + "RRR";
-                if((cache.getOrDefault(x + " " + y + " " + ((direction + 3) % 4), Integer.MAX_VALUE) > current + 1000) && !currentPath.endsWith("R")){
+                String right3 = x + " " + y + " " + direction.turnLeft().name() + " " + (current + 1000) + " "+ currentPath + "RRR";
+                if((cache.getOrDefault(x + " " + y + " " + direction.turnLeft().name(), Integer.MAX_VALUE) > current + 1000) && !currentPath.endsWith("R")){
                     queue.add(right3);
-                    cache.put(x + " " + y + " " + ((direction + 3) % 4), current + 1000);
+                    cache.put(x + " " + y + " " + direction.turnLeft().name(), current + 1000);
                 }
             }
         }
@@ -128,14 +106,14 @@ public class Day16 extends DayTemplate {
         long answer = Long.MAX_VALUE;
         List<String> result = new ArrayList<>();
         Queue<String> queue = new PriorityQueue<>();
-        queue.add(reindeer.x + " " + reindeer.y + " " + 0 + " " + 0 + " S");
+        queue.add(reindeer.x + " " + reindeer.y + " " + Direction.RIGHT.name() + " " + 0 + " S");
         Map<String, Integer> cache = new HashMap<>();
         while(!queue.isEmpty()){
             String element = queue.poll();
             String[] parts = element.split(" ");
             int x = Integer.parseInt(parts[0]);
             int y = Integer.parseInt(parts[1]);
-            int direction = Integer.parseInt(parts[2]);
+            Direction direction = Direction.valueOf(parts[2]);
             int current = Integer.parseInt(parts[3]);
             String currentPath = parts[4];
             if(x == exit.x && y == exit.y){
@@ -150,26 +128,26 @@ public class Day16 extends DayTemplate {
                 }
             }
             else{
-                int newx = x + xs[direction];
-                int newy = y + ys[direction];
+                int newx = x + direction.dx;
+                int newy = y + direction.dy;
                 if(safe(newx, newy, grid) && grid[newx][newy] != 2) {
                     Coordinate newReindeer = new Coordinate(newx, newy);
-                    String newHash = newReindeer.x + " " + newReindeer.y + " " + direction + " " + (current + 1) + " " + currentPath + "F";
-                    if((cache.getOrDefault(newReindeer.x + " " + newReindeer.y + " " + direction, Integer.MAX_VALUE) >= current + 1)){
+                    String newHash = newReindeer.x + " " + newReindeer.y + " " + direction.name() + " " + (current + 1) + " " + currentPath + "F";
+                    if((cache.getOrDefault(newReindeer.x + " " + newReindeer.y + " " + direction.name(), Integer.MAX_VALUE) >= current + 1)){
                         queue.add(newHash);
-                        cache.put(newReindeer.x + " " + newReindeer.y + " " + direction, current + 1);
+                        cache.put(newReindeer.x + " " + newReindeer.y + " " + direction.name(), current + 1);
 
                     }
                 }
-                String right = x + " " + y + " " + ((direction + 1) % 4) + " " + (current + 1000) + " " + currentPath + "R";
-                if((cache.getOrDefault(x + " " + y + " " + ((direction + 1) % 4), Integer.MAX_VALUE) >= current + 1000) && !currentPath.endsWith("RRR")){
+                String right = x + " " + y + " " + direction.turnRight().name() + " " + (current + 1000) + " " + currentPath + "R";
+                if((cache.getOrDefault(x + " " + y + " " + direction.turnRight().name(), Integer.MAX_VALUE) >= current + 1000) && !currentPath.endsWith("RRR")){
                     queue.add(right);
-                    cache.put(x + " " + y + " " + ((direction + 1) % 4), current + 1000);
+                    cache.put(x + " " + y + " " + direction.turnRight().name(), current + 1000);
                 }
-                String right3 = x + " " + y + " " + ((direction + 3) % 4) + " " + (current + 1000) + " "+ currentPath + "RRR";
-                if((cache.getOrDefault(x + " " + y + " " + ((direction + 3) % 4), Integer.MAX_VALUE) >= current + 1000) && !currentPath.endsWith("R")){
+                String right3 = x + " " + y + " " + direction.turnLeft().name() + " " + (current + 1000) + " "+ currentPath + "RRR";
+                if((cache.getOrDefault(x + " " + y + " " + direction.turnLeft().name(), Integer.MAX_VALUE) >= current + 1000) && !currentPath.endsWith("R")){
                     queue.add(right3);
-                    cache.put(x + " " + y + " " + ((direction + 3) % 4), current + 1000);
+                    cache.put(x + " " + y + " " + direction.turnLeft().name(), current + 1000);
                 }
             }
         }
@@ -180,14 +158,14 @@ public class Day16 extends DayTemplate {
         long answer = Long.MAX_VALUE;
         String result = "";
         Queue<String> queue = new PriorityQueue<>();
-        queue.add(reindeer.x + " " + reindeer.y + " " + 0 + " " + 0 + " S");
+        queue.add(reindeer.x + " " + reindeer.y + " " + Direction.RIGHT.name() + " " + 0 + " S");
         Map<String, Integer> cache = new HashMap<>();
         while(!queue.isEmpty()){
             String element = queue.poll();
             String[] parts = element.split(" ");
             int x = Integer.parseInt(parts[0]);
             int y = Integer.parseInt(parts[1]);
-            int direction = Integer.parseInt(parts[2]);
+            Direction direction = Direction.valueOf(parts[2]);
             int current = Integer.parseInt(parts[3]);
             String currentPath = parts[4];
             if(x == exit.x && y == exit.y){
@@ -197,25 +175,25 @@ public class Day16 extends DayTemplate {
                 }
             }
             else{
-                int newx = x + xs[direction];
-                int newy = y + ys[direction];
+                int newx = x + direction.dx;
+                int newy = y + direction.dy;
                 if(safe(newx, newy, grid) && grid[newx][newy] != 2) {
                     Coordinate newReindeer = new Coordinate(newx, newy);
-                    String newHash = newReindeer.x + " " + newReindeer.y + " " + direction + " " + (current + 1) + " " + currentPath + "F";
-                    if((cache.getOrDefault(newReindeer.x + " " + newReindeer.y + " " + direction, Integer.MAX_VALUE) > current + 1)){
+                    String newHash = newReindeer.x + " " + newReindeer.y + " " + direction.name() + " " + (current + 1) + " " + currentPath + "F";
+                    if((cache.getOrDefault(newReindeer.x + " " + newReindeer.y + " " + direction.name(), Integer.MAX_VALUE) > current + 1)){
                         queue.add(newHash);
-                        cache.put(newReindeer.x + " " + newReindeer.y + " " + direction, current + 1);
+                        cache.put(newReindeer.x + " " + newReindeer.y + " " + direction.name(), current + 1);
                     }
                 }
-                String right = x + " " + y + " " + ((direction + 1) % 4) + " " + (current + 1000) + " " + currentPath + "R";
-                if((cache.getOrDefault(x + " " + y + " " + ((direction + 1) % 4), Integer.MAX_VALUE) > current + 1000) && !currentPath.endsWith("RRR")){
+                String right = x + " " + y + " " + direction.turnRight().name() + " " + (current + 1000) + " " + currentPath + "R";
+                if((cache.getOrDefault(x + " " + y + " " + direction.turnRight().name(), Integer.MAX_VALUE) > current + 1000) && !currentPath.endsWith("RRR")){
                     queue.add(right);
-                    cache.put(x + " " + y + " " + ((direction + 1) % 4), current + 1000);
+                    cache.put(x + " " + y + " " + direction.turnRight().name(), current + 1000);
                 }
-                String right3 = x + " " + y + " " + ((direction + 3) % 4) + " " + (current + 1000) + " "+ currentPath + "RRR";
-                if((cache.getOrDefault(x + " " + y + " " + ((direction + 3) % 4), Integer.MAX_VALUE) > current + 1000) && !currentPath.endsWith("R")){
+                String right3 = x + " " + y + " " + direction.turnLeft().name() + " " + (current + 1000) + " "+ currentPath + "RRR";
+                if((cache.getOrDefault(x + " " + y + " " + direction.turnLeft().name(), Integer.MAX_VALUE) > current + 1000) && !currentPath.endsWith("R")){
                     queue.add(right3);
-                    cache.put(x + " " + y + " " + ((direction + 3) % 4), current + 1000);
+                    cache.put(x + " " + y + " " + direction.turnLeft().name(), current + 1000);
                 }
             }
         }
