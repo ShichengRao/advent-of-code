@@ -54,13 +54,15 @@ public class TimerRunner {
 
     private static Double timeSolution(String zeroFilledDay, int part, File inputFile) throws Exception {
         ExecutorService executor = Executors.newSingleThreadExecutor();
-        Callable<Double> task = () -> (Double) Class.forName(PATH_NAME_PREFIX + zeroFilledDay)
-                .getMethod("timer", boolean.class, Scanner.class)
-                .invoke(Class.forName(PATH_NAME_PREFIX + zeroFilledDay)
-                                .getDeclaredConstructor()
-                                .newInstance(),
-                        part == 1,
-                        new Scanner(inputFile));
+        Callable<Double> task = () -> {
+            DayTemplate solver = Class.forName(PATH_NAME_PREFIX + zeroFilledDay)
+                    .asSubclass(DayTemplate.class)
+                    .getDeclaredConstructor()
+                    .newInstance();
+            try (Scanner in = new Scanner(inputFile)) {
+                return solver.timer(part == 1, in);
+            }
+        };
 
         Future<Double> future = executor.submit(task);
         try {
