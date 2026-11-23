@@ -99,13 +99,7 @@ class Packet{
 	}
 	
 	private String readN(String[] binary, long n, int index) {
-		int counter = 0;
-		StringBuilder result = new StringBuilder();
-		while(counter < n) {
-			result.append(binary[index + counter]);
-			counter++;
-		}
-		return result.toString();
+		return String.join("", Arrays.asList(binary).subList(index, index + (int) n));
 	}
 	
 	public long getTotalVersions() {
