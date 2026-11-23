@@ -12,6 +12,9 @@ I write up my solves on [Substack](https://abnew123.substack.com/) and
   Advent of Code - 210/550 ⭐
 </h1>
 <h1 align="center">
+  2026 - 0 ⭐ - Java
+</h1>
+<h1 align="center">
   2025 - 24 ⭐ - Java
 </h1>
 <a href="2025/src/solutions/Day01.java">
@@ -374,6 +377,7 @@ elsewhere never blocks a run. It needs JDK 21 or newer. Inputs go in
 
 | Year | Days | Notes |
 |---|--:|---|
+| [2026](2026) | 12 | starts December 1 |
 | [2025](2025) | 12 | |
 | [2024](2024) | 25 | golfed versions in `DayNNGolfed.java`; see [2024/README.md](2024/README.md) |
 | [2023](2023) | 25 | golfed versions; JUnit tests in `src/tests` |
