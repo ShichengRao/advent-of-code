@@ -2,10 +2,6 @@
 
 Total run time of all 50 parts is roughly 1.3 seconds on my 2019 Macbook Pro, and roughly 1 second on my 2024 Macbook Pro. Days 16 & 17 take up the most time.  
 
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=abnew123_aoc2023&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=abnew123_aoc2023)
-[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=abnew123_aoc2023&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=abnew123_aoc2023)
-
-
 | Day | Problem | Solution | Benchmark (ms) |
 | --- | --- | --- |---------------:|
 | 1 | [Trebuchet?!](https://adventofcode.com/2023/day/1) | [Source](src/solutions/Day01.java) |             49 |
@@ -33,7 +29,6 @@ Total run time of all 50 parts is roughly 1.3 seconds on my 2019 Macbook Pro, an
 | 23 | [A Long Walk](https://adventofcode.com/2023/day/23) | [Source](src/solutions/Day23.java) |            108 |
 | 24 | [Never Tell Me The Odds](https://adventofcode.com/2023/day/24) | [Source](src/solutions/Day24.java) |             24 |
 | 25 | [Snowverload](https://adventofcode.com/2023/day/25) | [Source](src/solutions/Day25.java) |             26 |
-
 
 <!-- CHAR COUNTS BEGIN -->
 

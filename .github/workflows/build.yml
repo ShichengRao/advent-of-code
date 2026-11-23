@@ -8,8 +8,12 @@ jobs:
   compile:
     name: Compile every year
     runs-on: ubuntu-latest
+    env:
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # SonarQube Cloud uses the full history to tell new code from old
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
@@ -25,3 +29,10 @@ jobs:
           done
           javac -d build/tools tools/Run.java || status=1
           exit $status
+      # Skipped until the SONAR_TOKEN secret is set (and on pull requests from forks).
+      - name: Point Sonar at the compiled classes
+        if: env.SONAR_TOKEN != ''
+        run: echo "sonar.java.binaries=$(ls -d build/20[0-9][0-9] | paste -sd, -)" >> sonar-project.properties
+      - name: SonarQube Cloud scan
+        if: env.SONAR_TOKEN != ''
+        uses: SonarSource/sonarqube-scan-action@v6
