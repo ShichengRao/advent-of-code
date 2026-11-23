@@ -4,6 +4,9 @@ My [Advent of Code](https://adventofcode.com/) solutions in Java, every year in 
 I write up my solves on [Substack](https://abnew123.substack.com/) and
 [YouTube](https://www.youtube.com/@ShichengRao).
 
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=ShichengRao_advent-of-code&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=ShichengRao_advent-of-code)
+[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=ShichengRao_advent-of-code&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=ShichengRao_advent-of-code)
+
 <!-- AOC TILES BEGIN -->
 <h1 align="center">
   Advent of Code - 210/550 ⭐
