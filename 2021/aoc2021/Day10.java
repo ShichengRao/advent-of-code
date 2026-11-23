@@ -15,7 +15,7 @@ public class Day10 {
 			put("}",6);
 			put(">",7);
 		}};
-		int[] convert1 = new int[] {3, 57, 1197, 25137};
+		int[] convert1 = {3, 57, 1197, 25137};
 		List<String> inps = new ArrayList<>();
 		while(in.hasNext()) {
 			inps.add(in.nextLine());
@@ -32,12 +32,10 @@ public class Day10 {
 				if(let < 4) {
 					stack.push(let);
 				}
-				if(let>=4){
-					if(stack.pop() != (let % 4)) {
-						corrupted = true;
-						answer+= convert1[let%4];
-						break;
-					}
+				if(let>=4 && stack.pop() != (let % 4)){
+					corrupted = true;
+					answer+= convert1[let%4];
+					break;
 				}
 			}
 			if(!part1 && !corrupted) {
@@ -49,7 +47,7 @@ public class Day10 {
 				scores.add(answer);
 			}
 		}
-		Collections.sort(scores);
+		scores.sort(Comparator.naturalOrder());
 		return "" + (part1?answer:scores.get((scores.size()/2)));
 	}
 }

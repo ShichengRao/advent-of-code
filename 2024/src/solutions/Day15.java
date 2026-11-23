@@ -7,8 +7,8 @@ import java.util.*;
 
 public class Day15 extends DayTemplate {
 
-    int[]xs = new int[]{1,-1,0,0};
-    int[]ys = new int[]{0,0,1,-1};
+    int[]xs = {1,-1,0,0};
+    int[]ys = {0,0,1,-1};
 
     public String solve(boolean part1, Scanner in) {
         long answer = 0;

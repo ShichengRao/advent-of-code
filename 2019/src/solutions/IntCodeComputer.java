@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class IntCodeComputer {
+    private static final String INTO_POSITION = " into position ";
+    private static final String COMPARING = "Comparing ";
     public int[] memory;
     public int instructionPointer = 0;
 
@@ -90,7 +92,7 @@ public class IntCodeComputer {
         int inputPosition2 = memory[instructionPointer + 2];
         int outputPosition = memory[instructionPointer + 3];
         if(diagnosticMode){
-            System.out.println("Putting " + grabValue(inputPosition1, paramModes.get(0))  + " + " +  grabValue(inputPosition2, paramModes.get(1)) + " into position " + outputPosition);
+            System.out.println("Putting " + grabValue(inputPosition1, paramModes.get(0))  + " + " +  grabValue(inputPosition2, paramModes.get(1)) + INTO_POSITION + outputPosition);
         }
         memory[outputPosition] = grabValue(inputPosition1, paramModes.get(0)) + grabValue(inputPosition2, paramModes.get(1));
         return 4;
@@ -101,7 +103,7 @@ public class IntCodeComputer {
         int inputPosition2 = memory[instructionPointer + 2];
         int outputPosition = memory[instructionPointer + 3];
         if(diagnosticMode){
-            System.out.println("Putting " + grabValue(inputPosition1, paramModes.get(0))  + " * " +  grabValue(inputPosition2, paramModes.get(1)) + " into position " + outputPosition);
+            System.out.println("Putting " + grabValue(inputPosition1, paramModes.get(0))  + " * " +  grabValue(inputPosition2, paramModes.get(1)) + INTO_POSITION + outputPosition);
         }
         memory[outputPosition] = grabValue(inputPosition1, paramModes.get(0)) * grabValue(inputPosition2, paramModes.get(1));
         return 4;
@@ -111,7 +113,7 @@ public class IntCodeComputer {
         int location = memory[instructionPointer + 1];
         memory[location] = inputs.get(inputIndex);
         if(diagnosticMode) {
-            System.out.println("Putting  " + inputs.get(inputIndex) + " into position " + location);
+            System.out.println("Putting  " + inputs.get(inputIndex) + INTO_POSITION + location);
         }
         inputIndex++;
         return 2;
@@ -132,7 +134,7 @@ public class IntCodeComputer {
         int output = memory[instructionPointer + 2];
         int resolvedOutput = grabValue(output, paramModes.get(1));
         if(diagnosticMode){
-            System.out.println("Comparing " + resolvedInput + " to 0");
+            System.out.println(COMPARING + resolvedInput + " to 0");
         }
         if(resolvedInput != 0){
             instructionPointer = resolvedOutput;
@@ -149,7 +151,7 @@ public class IntCodeComputer {
         int output = memory[instructionPointer + 2];
         int resolvedOutput = grabValue(output, paramModes.get(1));
         if(diagnosticMode){
-            System.out.println("Comparing " + resolvedInput + " to 0");
+            System.out.println(COMPARING + resolvedInput + " to 0");
         }
         if(resolvedInput == 0){
             instructionPointer = resolvedOutput;
@@ -167,7 +169,7 @@ public class IntCodeComputer {
         int resolvedInput2 = grabValue(input2, paramModes.get(1));
         int output = memory[instructionPointer + 3];
         if(diagnosticMode){
-            System.out.println("Comparing " + resolvedInput1 + " to " + resolvedInput2);
+            System.out.println(COMPARING + resolvedInput1 + " to " + resolvedInput2);
         }
         if(resolvedInput1 < resolvedInput2){
             memory[output] = 1;
@@ -185,7 +187,7 @@ public class IntCodeComputer {
         int resolvedInput2 = grabValue(input2, paramModes.get(1));
         int output = memory[instructionPointer + 3];
         if(diagnosticMode){
-            System.out.println("Comparing " + resolvedInput1 + " to " + resolvedInput2);
+            System.out.println(COMPARING + resolvedInput1 + " to " + resolvedInput2);
         }
         if(resolvedInput1 == resolvedInput2){
             memory[output] = 1;

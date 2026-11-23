@@ -10,8 +10,8 @@ public class Day18 extends DayTemplate {
 
     int max2;
 
-    int[] xs = new int[]{1, 0, -1, 0};
-    int[] ys = new int[]{0, -1, 0, 1};
+    int[] xs = {1, 0, -1, 0};
+    int[] ys = {0, -1, 0, 1};
 
     @Override
     public String[] fullSolve(Scanner in) {

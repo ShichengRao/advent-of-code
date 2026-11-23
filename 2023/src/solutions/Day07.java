@@ -17,8 +17,8 @@ public class Day07 extends DayTemplate {
             hands1.add(new Hand(line.split(" ")[0], Integer.parseInt(line.split(" ")[1]), true));
             hands2.add(new Hand(line.split(" ")[0], Integer.parseInt(line.split(" ")[1]), false));
         }
-        Collections.sort(hands1);
-        Collections.sort(hands2);
+        hands1.sort(Comparator.naturalOrder());
+        hands2.sort(Comparator.naturalOrder());
         for (int i = 0; i < hands1.size(); i++) {
             answer1 += (long) hands1.get(i).bid * (i + 1);
             answer2 += (long) hands2.get(i).bid * (i + 1);
@@ -41,7 +41,7 @@ public class Day07 extends DayTemplate {
             String line = in.nextLine();
             hands.add(new Hand(line.split(" ")[0], Integer.parseInt(line.split(" ")[1]), part1));
         }
-        Collections.sort(hands);
+        hands.sort(Comparator.naturalOrder());
         for (int i = 0; i < hands.size(); i++) {
             answer += (long) hands.get(i).bid * (i + 1);
         }
@@ -54,7 +54,7 @@ class Hand implements Comparable<Hand> {
     int strength;
     int[] freqs = new int[13];
     int[] cards = new int[5];
-    String[] ranks = new String[]{"A", "K", "Q", "J", "T", "9", "8", "7", "6", "5", "4", "3", "2"};
+    String[] ranks = {"A", "K", "Q", "J", "T", "9", "8", "7", "6", "5", "4", "3", "2"};
 
     public Hand(String line, int bid, boolean part1) {
         if (!part1) {

@@ -14,18 +14,18 @@ public class Day25 extends DayTemplate {
 		for (String line : lines) {
 			answer += helper(line);
 		}
-		String result = "";
+		StringBuilder result = new StringBuilder();
 		while (answer > 0) {
 			long digit = answer % 5;
 			if (digit < 3) {
-				result = digit + result;
+				result.insert(0, digit);
 			} else {
-				result = ((digit == 3) ? "=" : "-") + result;
+				result.insert(0, (digit == 3) ? "=" : "-");
 				answer += 5;
 			}
 			answer /= 5;
 		}
-		return "" + result;
+		return result.toString();
 	}
 
 	public long helper(String line) {

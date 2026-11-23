@@ -23,7 +23,7 @@ public class Day01 extends DayTemplate {
 		if (temp != 0) {
 			elves.add(temp);
 		}
-		Collections.sort(elves, Collections.reverseOrder());
+		elves.sort(Collections.reverseOrder());
 		return "" + (part1 ? elves.get(0) : (elves.get(0) + elves.get(1) + elves.get(2)));
 	}
 

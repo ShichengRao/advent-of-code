@@ -49,22 +49,20 @@ public class Day11NoStream {
 			}
 		}
 		for(int i = 0; i < octopi.length; i ++) {
-			for(int j = 0; j < octopi[0].length; j++) {
-				octopi[i][j] = newarr[i][j];
-			}
+			System.arraycopy(newarr[i], 0, octopi[i], 0, octopi[0].length);
 		}
 		return cycles;
 	}
 	
 	private boolean flash(int[][] octopi, boolean[][] flashed) {
-		int[] xs = new int[] {1,1,1,0,0,-1,-1,-1};
-		int[] ys = new int[] {1,0,-1,1,-1,1,0,-1};
+		int[] xs = {1,1,1,0,0,-1,-1,-1};
+		int[] ys = {1,0,-1,1,-1,1,0,-1};
 		for(int i = 0; i < octopi.length; i ++) {
 			for(int j = 0; j < octopi[0].length; j++) {
 				if(octopi[i][j] > 9 && !flashed[i][j]) {
 					flashed[i][j] = true;
 					for(int k = 0; k < xs.length; k++) {
-						if(!OutOfBounds(i + xs[k], j + ys[k], octopi)) {
+						if(!outOfBounds(i + xs[k], j + ys[k], octopi)) {
 							octopi[i + xs[k]][j + ys[k]] ++;
 						}
 					}
@@ -75,7 +73,7 @@ public class Day11NoStream {
 		return false;
 	}
 	
-	private boolean OutOfBounds(int i, int j, int[][] grid) {
+	private boolean outOfBounds(int i, int j, int[][] grid) {
 		return !(i >= 0 && j >= 0 && i < grid.length && j < grid[0].length);
 	}
 	

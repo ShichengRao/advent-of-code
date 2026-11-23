@@ -27,14 +27,16 @@ public class Day07 extends DayTemplate {
         while (beams.keySet().iterator().next().x < row) {
             Map<Coordinate, Long> oldBeams = new HashMap<>(beams);
             beams = new HashMap<>();
-            for (Coordinate beam : oldBeams.keySet()) {
+            for (Map.Entry<Coordinate, Long> entry : oldBeams.entrySet()) {
+                Coordinate beam = entry.getKey();
+                long count = entry.getValue();
                 Coordinate nextBeam = new Coordinate(beam.x + 1, beam.y);
                 if (splitters.contains(nextBeam)) {
-                    answer += part1 ? 1 : oldBeams.get(beam);
-                    beams.merge(new Coordinate(beam.x + 1, beam.y + 1), oldBeams.get(beam), Long::sum);
-                    beams.merge(new Coordinate(beam.x + 1, beam.y - 1), oldBeams.get(beam), Long::sum);
+                    answer += part1 ? 1 : count;
+                    beams.merge(new Coordinate(beam.x + 1, beam.y + 1), count, Long::sum);
+                    beams.merge(new Coordinate(beam.x + 1, beam.y - 1), count, Long::sum);
                 } else {
-                    beams.merge(nextBeam, oldBeams.get(beam), Long::sum);
+                    beams.merge(nextBeam, count, Long::sum);
                 }
             }
         }

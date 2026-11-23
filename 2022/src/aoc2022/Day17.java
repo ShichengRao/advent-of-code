@@ -139,10 +139,8 @@ public class Day17 extends DayTemplate {
 		}
 		for (int i = 1; i < chamber[0].length; i++) {
 			for (int j = 0; j < chamber.length; j++) {
-				if (chamber[j][i] == 2) {
-					if (chamber[j][i - 1] == 1) {
-						return true;
-					}
+				if (chamber[j][i] == 2 && chamber[j][i - 1] == 1) {
+					return true;
 				}
 			}
 		}
@@ -170,10 +168,8 @@ public class Day17 extends DayTemplate {
 		}
 		for (int i = 0; i < chamber[0].length; i++) {
 			for (int j = left ? 1 : 0; j < chamber.length - (left ? 0 : 1); j++) {
-				if (chamber[j][i] == 2) {
-					if (chamber[j + (left ? -1 : 1)][i] == 1) {
-						return;
-					}
+				if (chamber[j][i] == 2 && (chamber[j + (left ? -1 : 1)][i] == 1)) {
+					return;
 				}
 			}
 		}

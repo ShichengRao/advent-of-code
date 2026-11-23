@@ -12,8 +12,8 @@ public class Day09 extends DayTemplate {
 		int[] positionsY = new int[size];
 		boolean[][] grid = new boolean[1000][1000];
 		grid[positionsX[size - 1] + 500][positionsY[size - 1] + 500] = true;
-		int[] xdiff = new int[] { -1, 1, 0, 0 };
-		int[] ydiff = new int[] { 0, 0, -1, 1 };
+		int[] xdiff = { -1, 1, 0, 0 };
+		int[] ydiff = { 0, 0, -1, 1 };
 		while (in.hasNext()) {
 			String[] parts = in.nextLine().split(" ");
 			int val = Integer.parseInt(parts[1]);
@@ -55,7 +55,6 @@ public class Day09 extends DayTemplate {
 					}
 				}
 				grid[positionsX[size - 1] + 500][positionsY[size - 1] + 500] = true;
-				;
 			}
 		}
 		for (boolean[] row : grid) {

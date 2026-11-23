@@ -75,11 +75,9 @@ public class Day17 extends DayTemplate {
             if(operator == 2){
                 registerB = combo % 8;
             }
-            if(operator == 3){
-                if(registerA != 0){
-                    instructionPointer = operand;
-                    continue;
-                }
+            if(operator == 3 && registerA != 0){
+                instructionPointer = operand;
+                continue;
             }
             if(operator == 4){
                 registerB ^= registerC;

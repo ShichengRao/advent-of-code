@@ -9,8 +9,8 @@ import static src.meta.Utils.*;
 
 public class Day16 extends DayTemplate {
 
-    int[] xs = new int[]{0, 1, 0, -1};
-    int[] ys = new int[]{1, 0, -1, 0};
+    int[] xs = {0, 1, 0, -1};
+    int[] ys = {1, 0, -1, 0};
 
     public String solve(boolean part1, Scanner in) {
         long answer = 0;

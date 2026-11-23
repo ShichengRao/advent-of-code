@@ -5,9 +5,12 @@ import src.objects.Coordinate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import java.util.function.Function;
+import java.util.function.ToIntFunction;
 
 public class Utils {
+    private Utils() {
+    }
+
     public static long gcd(long a, long b) {
         if (b == 0) return a;
         return gcd(b, a % b);
@@ -78,8 +81,8 @@ public class Utils {
 
     public static List<Coordinate> getNeighbors(int x, int y, int[][] grid){
         List<Coordinate> neighbors = new ArrayList<>();
-        int[] xs = new int[]{1,-1,0,0};
-        int[] ys = new int[]{0,0,1,-1};
+        int[] xs = {1,-1,0,0};
+        int[] ys = {0,0,1,-1};
         for (int i = 0; i < 4; i++) {
             int nx = x + xs[i];
             int ny = y + ys[i];
@@ -92,8 +95,8 @@ public class Utils {
 
     public static List<Coordinate> getNeighborsFull(int x, int y, int[][] grid){
         List<Coordinate> neighbors = new ArrayList<>();
-        int[] xs = new int[]{1,1,1,0,0,-1,-1,-1};
-        int[] ys = new int[]{1,0,-1,1,-1,1,0,-1};
+        int[] xs = {1,1,1,0,0,-1,-1,-1};
+        int[] ys = {1,0,-1,1,-1,1,0,-1};
         for (int i = 0; i < 4; i++) {
             int nx = x + xs[i];
             int ny = y + ys[i];
@@ -104,11 +107,11 @@ public class Utils {
         return neighbors;
     }
 
-    public static int[][] convertCharArrayToIntArray(char[][] charArray, Function<Character, Integer> converter) {
+    public static int[][] convertCharArrayToIntArray(char[][] charArray, ToIntFunction<Character> converter) {
         int[][] result = new int[charArray.length][charArray[0].length];
         for (int i = 0; i < charArray.length; i++) {
             for (int j = 0; j < charArray[i].length; j++) {
-                result[i][j] = converter.apply(charArray[i][j]);
+                result[i][j] = converter.applyAsInt(charArray[i][j]);
             }
         }
         return result;
@@ -116,12 +119,12 @@ public class Utils {
 
 
 
-    public static int[][] buildGrid(List<String> lines, Function<Character, Integer> converter){
+    public static int[][] buildGrid(List<String> lines, ToIntFunction<Character> converter){
         int[][] grid = new int[lines.get(0).length()][lines.size()];
         for (int i = 0; i < lines.size(); i++) {
             String line = lines.get(i);
             for (int j = 0; j < line.length(); j++) {
-                grid[j][i] = converter.apply(line.charAt(j));
+                grid[j][i] = converter.applyAsInt(line.charAt(j));
             }
         }
         return grid;

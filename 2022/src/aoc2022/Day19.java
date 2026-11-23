@@ -69,7 +69,7 @@ class BluePrint {
 							step(neededTurns + 1, subtract(currRes, geodeR), currR)));
 		}
 
-		if (!(currRes[2] > min * (geodeR[2] - currR[2]))) {
+		if (currRes[2] <= min * (geodeR[2] - currR[2])) {
 			neededTurns = needed(currRes, currR, obsidianR);
 			if (neededTurns < min) {
 				answer = Math.max(answer,
@@ -77,7 +77,7 @@ class BluePrint {
 								step(neededTurns + 1, subtract(currRes, obsidianR), currR)));
 			}
 		}
-		if (!(currRes[1] > min * (obsidianR[1] - currR[1]))) {
+		if (currRes[1] <= min * (obsidianR[1] - currR[1])) {
 			neededTurns = needed(currRes, currR, clayR);
 			if (neededTurns < min) {
 				answer = Math.max(answer,
@@ -85,7 +85,7 @@ class BluePrint {
 								step(neededTurns + 1, subtract(currRes, clayR), currR)));
 			}
 		}
-		if (!(currRes[0] > min * (maxOre - currR[0]))) {
+		if (currRes[0] <= min * (maxOre - currR[0])) {
 			neededTurns = needed(currRes, currR, oreR);
 			if (neededTurns < min) {
 				answer = Math.max(answer,
@@ -97,23 +97,23 @@ class BluePrint {
 		return answer;
 	}
 
-	public int[] subtract(int[] currRes, int[] R) {
-		return step(-1, currRes, R);
+	public int[] subtract(int[] currRes, int[] robots) {
+		return step(-1, currRes, robots);
 	}
 
-	public int[] step(int numSteps, int[] currRes, int[] R) {
+	public int[] step(int numSteps, int[] currRes, int[] robots) {
 		int[] newRes = new int[currRes.length];
 		for (int i = 0; i < currRes.length; i++) {
-			newRes[i] = currRes[i] + (numSteps * R[i]);
+			newRes[i] = currRes[i] + (numSteps * robots[i]);
 		}
 		return newRes;
 	}
 
-	public int needed(int[] currRes, int[] R, int[] bot) {
+	public int needed(int[] currRes, int[] robots, int[] bot) {
 		int max = 0;
 		for (int i = 0; i < currRes.length; i++) {
 			if (currRes[i] < bot[i]) {
-				max = (int) Math.max(Math.ceil((bot[i] - currRes[i]) / (double) R[i]), max);
+				max = (int) Math.max(Math.ceil((bot[i] - currRes[i]) / (double) robots[i]), max);
 			}
 		}
 		return max;

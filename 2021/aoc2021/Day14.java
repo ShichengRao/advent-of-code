@@ -25,23 +25,23 @@ public class Day14 {
 		long max = 0;
 		long min = (long)1000 * 1000 * 1000 * 1000 * 100;
 		Map<String, Long> map = new HashMap<>();
-		for(String key: vals.keySet()) {
-			map.merge(key.substring(0,1), vals.get(key), (a,b) -> a+b);
-			map.merge(key.substring(1,2), vals.get(key), (a,b) -> a+b);
+		for(Map.Entry<String, Long> entry: vals.entrySet()) {
+			map.merge(entry.getKey().substring(0,1), entry.getValue(), (a,b) -> a+b);
+			map.merge(entry.getKey().substring(1,2), entry.getValue(), (a,b) -> a+b);
 		}
-		for(String key: map.keySet()) {
-			max = Math.max(map.get(key),max);
-			min = Math.min(map.get(key),min);
+		for(long total: map.values()) {
+			max = Math.max(total,max);
+			min = Math.min(total,min);
 		}
 		return (max - min)/2 + "";
 	}
 	
 	private Map<String, Long> iterate(Map<String, Long> vals, RuleBook book){
 		Map<String, Long> newVals = new HashMap<>();
-		for(String key: vals.keySet()) {
-			String[] pats = book.apply(key);
-			newVals.merge(pats[0], vals.get(key), (a,b) -> a+b);
-			newVals.merge(pats[1], vals.get(key), (a,b) -> a+b);
+		for(Map.Entry<String, Long> entry: vals.entrySet()) {
+			String[] pats = book.apply(entry.getKey());
+			newVals.merge(pats[0], entry.getValue(), (a,b) -> a+b);
+			newVals.merge(pats[1], entry.getValue(), (a,b) -> a+b);
 		}
 		return newVals;
 	}

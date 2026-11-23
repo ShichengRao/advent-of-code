@@ -31,12 +31,10 @@ public class Day21 extends DayTemplate {
 				if (solves[i]) {
 					continue;
 				}
-				if (all.get(i).orig.length() <= 10) {
-					if (!all.get(i).name.equals("humn") || part1) {
-						solved++;
-						solves[i] = true;
-						continue;
-					}
+				if (all.get(i).orig.length() <= 10 && (!all.get(i).name.equals("humn") || part1)) {
+					solved++;
+					solves[i] = true;
+					continue;
 				}
 				if (!part1 && all.get(i).name.equals("humn") && all.get(i).val != Long.MIN_VALUE) {
 					return all.get(i).val;

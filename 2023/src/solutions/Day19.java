@@ -6,7 +6,7 @@ import java.util.*;
 
 public class Day19 extends DayTemplate {
 
-    protected static final String[] allCategories = new String[]{"x", "m", "a", "s"};
+    protected static final String[] allCategories = {"x", "m", "a", "s"};
     Map<String, Workflow> workflows;
     List<Part> parts;
 

@@ -65,14 +65,12 @@ class Grid{
 	public int[][] fold(int place, boolean x){
 		for(int i = 0; i < (x?grid.length:place); i++) {
 			for(int j = 0; j < (x?place:grid[0].length); j++) {
-				grid[i][j] += grid[!x?(2 * place - i): i][!x?j:(2 * place - j)];
+				grid[i][j] += grid[x?i:(2 * place - i)][x?(2 * place - j):j];
 			}
 		}
 		int[][] newGrid = new int[x?grid.length:place][x?place:grid[0].length];
 		for(int i = 0; i < newGrid.length; i++) {
-			for(int j = 0; j < newGrid[0].length; j++) {
-				newGrid[i][j] = grid[i][j];
-			}
+			System.arraycopy(grid[i], 0, newGrid[i], 0, newGrid[0].length);
 		}
 		grid = newGrid;
 		return grid;

@@ -71,8 +71,16 @@ public class Day24 extends DayTemplate {
 	public List<CoordTime> advance(List<CoordTime> current, int width, int height) {
 		List<CoordTime> next = new ArrayList<>();
 		for (CoordTime blizzard : current) {
-			int deltax = (blizzard.direction == 1) ? -1 : (blizzard.direction == 3) ? 1 : 0;
-			int deltay = (blizzard.direction == 4) ? -1 : (blizzard.direction == 2) ? 1 : 0;
+			int deltax = switch (blizzard.direction) {
+				case 1 -> -1;
+				case 3 -> 1;
+				default -> 0;
+			};
+			int deltay = switch (blizzard.direction) {
+				case 4 -> -1;
+				case 2 -> 1;
+				default -> 0;
+			};
 			CoordTime candidate = new CoordTime(blizzard.x + deltax, blizzard.y + deltay, blizzard.time + 1,
 					blizzard.direction);
 			if (inBounds(candidate, width, height)) {
@@ -100,8 +108,8 @@ public class Day24 extends DayTemplate {
 		Queue<CoordTime> bfs = new LinkedList<>();
 		Queue<CoordTime> bfs2 = new LinkedList<>();
 		int[][] blizz = new int[width][height];
-		int[] deltax = new int[] { -1, 0, 1, 0, 0 };
-		int[] deltay = new int[] { 0, -1, 0, 1, 0 };
+		int[] deltax = { -1, 0, 1, 0, 0 };
+		int[] deltay = { 0, -1, 0, 1, 0 };
 		int timestamp = startTime;
 		bfs.add(new CoordTime(start.x, start.y, startTime, -1));
 		while (!bfs.isEmpty() || !bfs2.isEmpty()) {

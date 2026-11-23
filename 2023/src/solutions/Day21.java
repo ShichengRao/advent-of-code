@@ -23,8 +23,8 @@ public class Day21 extends DayTemplate {
         long answer = 0;
         List<Coordinate> reachablePoints = new ArrayList<>();
         reachablePoints.add(buildGridAndGetStart(in));
-        int[] xs = new int[]{-1, 1, 0, 0};
-        int[] ys = new int[]{0, 0, -1, 1};
+        int[] xs = {-1, 1, 0, 0};
+        int[] ys = {0, 0, -1, 1};
         int index = 0;
         while (index < (part1 ? 64 : grid.length)) {
             index++;

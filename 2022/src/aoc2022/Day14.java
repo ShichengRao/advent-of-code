@@ -7,7 +7,7 @@ public class Day14 extends DayTemplate {
 
 	public String solve(boolean part1, Scanner in) throws FileNotFoundException {
 		int answer = 0;
-		boolean grid[][] = new boolean[1000][1000];
+		boolean[][] grid = new boolean[1000][1000];
 		int maxy = 0;
 		while (in.hasNext()) {
 			String line = in.nextLine();
@@ -49,20 +49,16 @@ public class Day14 extends DayTemplate {
 		while (y <= maxy + 3) {
 			if (!grid[x][y + 1]) {
 				y++;
-				continue;
-			}
-			if (!grid[x - 1][y + 1]) {
+			} else if (!grid[x - 1][y + 1]) {
 				y++;
 				x--;
-				continue;
-			}
-			if (!grid[x + 1][y + 1]) {
+			} else if (!grid[x + 1][y + 1]) {
 				y++;
 				x++;
-				continue;
+			} else {
+				grid[x][y] = true;
+				return true;
 			}
-			grid[x][y] = true;
-			return true;
 		}
 		return false;
 	}

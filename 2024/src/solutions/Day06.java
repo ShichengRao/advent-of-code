@@ -9,8 +9,8 @@ import static src.meta.Utils.*;
 
 public class Day06 extends DayTemplate {
 
-    int[] xs = new int[]{0,1,0,-1};
-    int[] ys = new int[]{-1,0,1,0};
+    int[] xs = {0,1,0,-1};
+    int[] ys = {-1,0,1,0};
 
     public String solve(boolean part1, Scanner in) {
         long answer = 0;
@@ -20,7 +20,11 @@ public class Day06 extends DayTemplate {
         }
         GuardLocation start = new GuardLocation(0,0, 0);
         int direction = 0; //0 up, 1 right, 2 down, 3 left
-        int[][] grid = buildGrid(lines, c -> c == '.' ? 1 : (c == '#' ? 2 : 3));
+        int[][] grid = buildGrid(lines, c -> switch (c) {
+            case '.' -> 1;
+            case '#' -> 2;
+            default -> 3;
+        });
 
         for(int i = 0; i < grid.length; i++){
             for(int j = 0; j < grid[0].length; j++){

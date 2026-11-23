@@ -3,7 +3,7 @@ package src.solutions;
 import src.meta.DayTemplate;
 
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 
@@ -15,13 +15,13 @@ public class Day01 extends DayTemplate {
         List<Integer> left = new ArrayList<>();
         List<Integer> right = new ArrayList<>();
         while (in.hasNext()) {
-            String[] line = in.nextLine().split("   ");
+            String[] line = in.nextLine().split(" {3}");
             left.add(Integer.parseInt(line[0]));
             right.add(Integer.parseInt(line[1]));
         }
         if(part1){
-            Collections.sort(left);
-            Collections.sort(right);
+            left.sort(Comparator.naturalOrder());
+            right.sort(Comparator.naturalOrder());
             for(int i = 0; i < left.size(); i++){
                 answer += Math.abs(left.get(i) - right.get(i));
             }

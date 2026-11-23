@@ -41,9 +41,9 @@ public class Day22 extends DayTemplate {
                     past = future;
                 }
             }
-            for(Integer key: sequenceValues.keySet()){
-                if(sequenceValues.get(key) > answer){
-                    answer = sequenceValues.get(key);
+            for(long value: sequenceValues.values()){
+                if(value > answer){
+                    answer = value;
                 }
             }
         }

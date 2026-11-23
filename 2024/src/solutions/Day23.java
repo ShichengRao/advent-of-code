@@ -37,10 +37,8 @@ public class Day23 extends DayTemplate {
             for(String first: forIndices){
                 for(String second: connections.get(first)){
                     for(String third: connections.get(second)){
-                        if(connections.get(third).contains(first)){
-                            if(first.startsWith("t") || second.startsWith("t") || third.startsWith("t")){
-                                answer++;
-                            }
+                        if(connections.get(third).contains(first) && (first.startsWith("t") || second.startsWith("t") || third.startsWith("t"))){
+                            answer++;
                         }
                     }
                 }
@@ -48,7 +46,7 @@ public class Day23 extends DayTemplate {
             answer/=6;
         }
         else{
-            BronKerbosch(new HashSet<>(), computers, new HashSet<>());
+            bronKerbosch(new HashSet<>(), computers, new HashSet<>());
             Set<String> biggest = new HashSet<>();
             for(Set<String> candidate: maximalCliques){
                 if(candidate.size() > biggest.size()){
@@ -60,36 +58,36 @@ public class Day23 extends DayTemplate {
         return answer+"";
     }
 
-    private void BronKerbosch(Set<String> R, Set<String> P, Set<String> X){
-        if(P.isEmpty() && X.isEmpty()){
-            maximalCliques.add(R);
+    private void bronKerbosch(Set<String> clique, Set<String> candidates, Set<String> excluded){
+        if(candidates.isEmpty() && excluded.isEmpty()){
+            maximalCliques.add(clique);
         }
         else{
-            Set<String> P_UNION_X = new HashSet<>(P);
-            P_UNION_X.addAll(X);
-            String pivot = P_UNION_X.iterator().next();
-            P.removeAll(connections.get(pivot));
-            for(String v: List.copyOf(P)){
-                Set<String> RPrime = new HashSet<>(R);
-                RPrime.add(v);
-                Set<String> PPrime = new HashSet<>(connections.get(v));
-                PPrime.retainAll(P);
-                Set<String> XPrime = new HashSet<>(connections.get(v));
-                XPrime.retainAll(X);
+            Set<String> candidatesOrExcluded = new HashSet<>(candidates);
+            candidatesOrExcluded.addAll(excluded);
+            String pivot = candidatesOrExcluded.iterator().next();
+            candidates.removeAll(connections.get(pivot));
+            for(String v: List.copyOf(candidates)){
+                Set<String> nextClique = new HashSet<>(clique);
+                nextClique.add(v);
+                Set<String> nextCandidates = new HashSet<>(connections.get(v));
+                nextCandidates.retainAll(candidates);
+                Set<String> nextExcluded = new HashSet<>(connections.get(v));
+                nextExcluded.retainAll(excluded);
 
-                BronKerbosch(RPrime, PPrime, XPrime);
-                P.remove(v);
-                X.add(v);
+                bronKerbosch(nextClique, nextCandidates, nextExcluded);
+                candidates.remove(v);
+                excluded.add(v);
             }
-            Set<String> RPrime = new HashSet<>(R);
-            RPrime.add(pivot);
-            Set<String> PPrime = new HashSet<>(connections.get(pivot));
-            PPrime.retainAll(P);
-            Set<String> XPrime = new HashSet<>(connections.get(pivot));
-            XPrime.retainAll(X);
-            BronKerbosch(RPrime, PPrime, XPrime);
-            P.remove(pivot);
-            X.add(pivot);
+            Set<String> nextClique = new HashSet<>(clique);
+            nextClique.add(pivot);
+            Set<String> nextCandidates = new HashSet<>(connections.get(pivot));
+            nextCandidates.retainAll(candidates);
+            Set<String> nextExcluded = new HashSet<>(connections.get(pivot));
+            nextExcluded.retainAll(excluded);
+            bronKerbosch(nextClique, nextCandidates, nextExcluded);
+            candidates.remove(pivot);
+            excluded.add(pivot);
         }
     }
 

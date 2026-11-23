@@ -8,8 +8,8 @@ import java.util.*;
 public class Day16 extends DayTemplate {
 
     int[][] dirChart;
-    int[] xs = new int[]{-1, 1, 0, 0};
-    int[] ys = new int[]{0, 0, -1, 1};
+    int[] xs = {-1, 1, 0, 0};
+    int[] ys = {0, 0, -1, 1};
     Set<Coordinate> pointsOfInterest;
     Set<Beam> exited;
 

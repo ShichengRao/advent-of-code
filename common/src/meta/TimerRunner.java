@@ -8,6 +8,7 @@ import java.util.concurrent.*;
 
 public class TimerRunner {
     private static final String PATH_NAME_PREFIX = "src.solutions.Day";
+    private static final String PART = " part ";
 
     public static void main(String[] args) throws IOException {
         String outputFile = "timing-output.txt";
@@ -22,19 +23,19 @@ public class TimerRunner {
                 for (int part = 1; part <= 2; part++) {
                     File inputFile = new File("./data/day" + zeroFilledDay + ".txt");
                     if (!inputFile.exists()) {
-                        writer.write("Day " + zeroFilledDay + " part " + part + ": Input file not found, skipping.\n");
+                        writer.write("Day " + zeroFilledDay + PART + part + ": Input file not found, skipping.\n");
                         continue;
                     }
 
                     try {
-                        System.out.println("doing day " + day + " part " + part);
+                        System.out.println("doing day " + day + PART + part);
                         Double time = timeSolution(zeroFilledDay, part, inputFile);
-                        writer.write("Day " + zeroFilledDay + " part " + part + " execution time: " + time + " ms\n");
+                        writer.write("Day " + zeroFilledDay + PART + part + " execution time: " + time + " ms\n");
                         totalTime += time;
                     } catch (TimeoutException e) {
-                        writer.write("Day " + zeroFilledDay + " part " + part + ": Execution timed out after 10 seconds.\n");
+                        writer.write("Day " + zeroFilledDay + PART + part + ": Execution timed out after 10 seconds.\n");
                     } catch (Exception e) {
-                        writer.write("Day " + zeroFilledDay + " part " + part + ": Error - " + e.getMessage() + "\n");
+                        writer.write("Day " + zeroFilledDay + PART + part + ": Error - " + e.getMessage() + "\n");
                     }
                 }
             }

@@ -3,6 +3,7 @@ package aoc2021;
 import java.util.*;
 
 public class Day12 {
+	private static final String START = "start";
 	
 	public String solve(boolean part1, Scanner in) {
 		List<Link> lines = new ArrayList<>();
@@ -21,9 +22,9 @@ public class Day12 {
 		for(int i = 0; i < size; i++) {
 			caves.add(caves.get(i));
 		}
-		caves.remove("start");
-		caves.remove("start");
-		long answer = recurse(lines, caves, "start", "", part1?true:false);
+		caves.remove(START);
+		caves.remove(START);
+		long answer = recurse(lines, caves, START, "", part1);
 		return "" + answer;
 	}
 	

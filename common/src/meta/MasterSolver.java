@@ -32,7 +32,7 @@ public class MasterSolver {
 
     public static void main(String[] args) throws Exception {
         List<Integer> days = new ArrayList<>();
-        boolean[] parts = new boolean[]{true, false};
+        boolean[] parts = {true, false};
         boolean runTimer = false;
         boolean timeFullDays = false;
         boolean correctnessCheck = false;
@@ -94,10 +94,7 @@ public class MasterSolver {
             String zeroFilledDay = zeroFill(day);
             Class<?> cls = dayClass(day);
             File file = inputFile(day);
-            if (cls == null || !file.exists()) {
-                continue;
-            }
-            if (!useGolfed && newDay(cls).exclude()) {
+            if (cls == null || !file.exists() || (!useGolfed && newDay(cls).exclude())) {
                 continue;
             }
             if (fullDays) {
@@ -107,21 +104,21 @@ public class MasterSolver {
                 }
                 System.out.println("Day " + zeroFilledDay + " execution time: " + time);
                 totalTime += time;
-                continue;
-            }
-            for (int part = 1; part <= 2; part++) {
-                double time;
-                if (useGolfed) {
-                    long start = System.nanoTime();
-                    solve(cls, part == 1, file);
-                    time = (System.nanoTime() - start) / 1000000.0;
-                } else {
-                    try (Scanner in = new Scanner(file)) {
-                        time = newDay(cls).timer(part == 1, in);
+            } else {
+                for (int part = 1; part <= 2; part++) {
+                    double time;
+                    if (useGolfed) {
+                        long start = System.nanoTime();
+                        solve(cls, part == 1, file);
+                        time = (System.nanoTime() - start) / 1000000.0;
+                    } else {
+                        try (Scanner in = new Scanner(file)) {
+                            time = newDay(cls).timer(part == 1, in);
+                        }
                     }
+                    System.out.println("Day " + zeroFilledDay + PART + part + " execution time: " + time);
+                    totalTime += time;
                 }
-                System.out.println("Day " + zeroFilledDay + PART + part + " execution time: " + time);
-                totalTime += time;
             }
         }
         System.out.println("Total execution time (ms): " + totalTime);

@@ -31,7 +31,7 @@ public class Day9 implements DayTemplate{
 				basinSizes.add(dfs(i,j,grid,checked));
 			}
 		}
-		Collections.sort(basinSizes, Collections.reverseOrder()); 
+		basinSizes.sort(Collections.reverseOrder()); 
 		return "" + (basinSizes.get(0) * basinSizes.get(1) * basinSizes.get(2));
 	}
 	
@@ -76,12 +76,12 @@ public class Day9 implements DayTemplate{
 		return lowest;
 	}
 	
-	private boolean OutOfBounds(int i, int j, int[][] grid) {
+	private boolean outOfBounds(int i, int j, int[][] grid) {
 		return !(i >= 0 && j >= 0 && i < grid.length && j < grid[0].length);
 	}
 	
 	private int dfs(int i, int j, int[][] grid,boolean[][] checked) {
-		if(OutOfBounds(i,j,grid) || checked[i][j]) {
+		if(outOfBounds(i,j,grid) || checked[i][j]) {
 			return 0;
 		}
 		checked[i][j] = true; 

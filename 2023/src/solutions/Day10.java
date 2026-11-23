@@ -76,8 +76,8 @@ public class Day10 extends DayTemplate {
     private void floodFill() {
         List<Coordinate> pointsToCheck = new ArrayList<>();
         pointsToCheck.add(new Coordinate(0, 0));
-        int[] xs = new int[]{-1, 1, 0, 0};
-        int[] ys = new int[]{0, 0, -1, 1};
+        int[] xs = {-1, 1, 0, 0};
+        int[] ys = {0, 0, -1, 1};
         while (!pointsToCheck.isEmpty()) {
             List<Coordinate> tmp = new ArrayList<>();
             for (Coordinate point : pointsToCheck) {

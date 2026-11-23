@@ -21,8 +21,7 @@ public class Day08 extends DayTemplate {
             }
         }
         Set<Coordinate> antinodes = new HashSet<>();
-        for(Character c: freqs.keySet()){
-            List<Coordinate> lst = freqs.get(c);
+        for(List<Coordinate> lst: freqs.values()){
             for(int i = 0; i < lst.size(); i++){
                 for(int j = i + 1; j < lst.size(); j++){
                     Coordinate a = lst.get(i);

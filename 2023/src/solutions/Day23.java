@@ -32,8 +32,8 @@ public class Day23 extends DayTemplate {
                 }
             }
         }
-        int[] xs = new int[]{1, 0, -1, 0};
-        int[] ys = new int[]{0, 1, 0, -1};
+        int[] xs = {1, 0, -1, 0};
+        int[] ys = {0, 1, 0, -1};
         Set<Coordinate> intersections = new HashSet<>();
         for (int i = 0; i < grid.length; i++) {
             for (int j = 0; j < grid[0].length; j++) {
@@ -303,8 +303,8 @@ public class Day23 extends DayTemplate {
     }
 
     private void bfs(Coordinate start, Map<Coordinate, Set<Coordinate>> neighbors, int[][] grid, Set<Coordinate> intersections) {
-        int[] xs = new int[]{1, 0, -1, 0};
-        int[] ys = new int[]{0, 1, 0, -1};
+        int[] xs = {1, 0, -1, 0};
+        int[] ys = {0, 1, 0, -1};
         Queue<Coordinate> queue = new LinkedList<>();
         Set<Coordinate> visited = new HashSet<>();
         queue.add(start);
