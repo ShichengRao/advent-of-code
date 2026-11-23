@@ -1,0 +1,7 @@
+repos:
+  - repo: https://github.com/LiquidFun/aoc_tiles
+    rev: 0.7.2
+    hooks:
+      - id: aoc-tiles
+        args:
+          - --exclude-patterns=*/meta/*,*/objects/*,*/tests/*,*Golfed*,tools/*

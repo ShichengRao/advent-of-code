@@ -1,0 +1,115 @@
+#!/usr/bin/env bash
+# ./aoc <year> <day> [1|2] [--golf]   run one day (both parts unless one is given)
+# ./aoc <year> all [--golf]           run every day of a year that has a solution and input
+# ./aoc new <year> <day>              create a day from the template (and the year, if new)
+#
+# Only the day's file and what it references get compiled (javac -sourcepath), so
+# unfinished days elsewhere in the repo never block a run. Inputs live in
+# <year>/data/dayNN.txt, which is gitignored.
+set -euo pipefail
+ROOT=$(cd "$(dirname "$0")" && pwd)
+
+usage() { sed -n '2,4p' "$0" | sed 's/^# //'; exit 1; }
+
+find_day_file() { # <year> <day> <golf 0|1>
+  local suffix=""
+  [ "$3" = 1 ] && suffix=Golfed
+  find "$ROOT/$1" -path "$ROOT/$1/out" -prune -o -type f \
+    \( -name "Day$(printf %02d "$2")$suffix.java" -o -name "Day$2$suffix.java" \) -print \
+    | { grep -v '/tests/' || true; } | head -1
+}
+
+run_day() { # <year> <day> <parts> <golf 0|1>
+  local y=$1 n=$2 parts=$3 golf=$4
+  local file input pkg dir srcroot cls out
+  file=$(find_day_file "$y" "$n" "$golf")
+  [ -n "$file" ] || { echo "$y day $n: no solution file" >&2; return 1; }
+  input="$ROOT/$y/data/day$(printf %02d "$n").txt"
+  [ -f "$input" ] || { echo "$y day $n: no input at ${input#"$ROOT"/}" >&2; return 1; }
+
+  # The package declaration tells us where this year's source root is and the class name.
+  pkg=$(sed -n 's/^[[:space:]]*package[[:space:]]*\([A-Za-z0-9_.]*\)[[:space:]]*;.*/\1/p' "$file" | head -1)
+  dir=$(dirname "$file")
+  srcroot=$dir
+  [ -n "$pkg" ] && srcroot=${dir%/"${pkg//.//}"}
+  if [ "$golf" = 1 ]; then
+    cls=$(grep -o 'class [A-Za-z_][A-Za-z0-9_]*' "$file" | head -1 | cut -d' ' -f2)
+  else
+    cls=$(basename "$file" .java)
+  fi
+  [ -n "$pkg" ] && cls="$pkg.$cls"
+
+  out="$ROOT/out/$y"
+  mkdir -p "$out"
+  javac -nowarn -XDsuppressNotes -encoding UTF-8 -d "$out" -sourcepath "$srcroot" -cp "$out" \
+    "$ROOT/tools/Run.java" "$file"
+  echo "== $y day $n$([ "$golf" = 1 ] && echo ' (golfed)')"
+  (cd "$ROOT/$y" && java -cp "$out" Run "$cls" "$input" "$parts" $([ "$golf" = 1 ] && echo golf))
+}
+
+new_day() { # <year> <day>
+  local y=$1 n=$((10#$2)) dd file latest
+  dd=$(printf %02d "$n")
+  if [ ! -d "$ROOT/$y" ]; then
+    latest=$(find "$ROOT" -maxdepth 1 -type d -name '20[0-9][0-9]' | sort | tail -1)
+    mkdir -p "$ROOT/$y/src/solutions" "$ROOT/$y/data"
+    cp -R "$latest/src/meta" "$latest/src/objects" "$ROOT/$y/src/"
+    echo "created $y/ with meta/ and objects/ copied from $(basename "$latest")"
+  fi
+  mkdir -p "$ROOT/$y/src/solutions" "$ROOT/$y/data"
+  file="$ROOT/$y/src/solutions/Day$dd.java"
+  [ -e "$file" ] && { echo "${file#"$ROOT"/} already exists" >&2; exit 1; }
+  cat > "$file" <<EOF
+package src.solutions;
+
+import src.meta.DayTemplate;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+public class Day$dd extends DayTemplate {
+
+    public String solve(boolean part1, Scanner in) {
+        long answer = 0;
+        List<String> lines = new ArrayList<>();
+        while (in.hasNextLine()) {
+            lines.add(in.nextLine());
+        }
+
+        return answer + "";
+    }
+}
+EOF
+  touch "$ROOT/$y/data/day$dd.txt"
+  echo "created ${file#"$ROOT"/} (paste your input into $y/data/day$dd.txt)"
+}
+
+[ $# -ge 1 ] || usage
+if [ "$1" = new ]; then
+  [ $# -eq 3 ] || usage
+  new_day "$2" "$3"
+  exit
+fi
+[ $# -ge 2 ] && [ -d "$ROOT/$1" ] || usage
+
+year=$1 day=$2 parts=12 golf=0
+shift 2
+for arg in "$@"; do
+  case $arg in
+    1|2) parts=$arg ;;
+    --golf) golf=1 ;;
+    *) usage ;;
+  esac
+done
+
+if [ "$day" = all ]; then
+  failed=0
+  for n in $(seq 1 25); do
+    [ -n "$(find_day_file "$year" "$n" "$golf")" ] || continue
+    run_day "$year" "$n" "$parts" "$golf" || failed=$((failed + 1))
+  done
+  [ "$failed" -eq 0 ] || { echo "$failed day(s) failed" >&2; exit 1; }
+else
+  run_day "$year" "$((10#$day))" "$parts" "$golf"
+fi

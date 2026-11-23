@@ -1,0 +1,26 @@
+# Build output
+out/
+build/
+*.class
+
+# IDE and OS files
+.idea/
+*.iml
+.DS_Store
+
+# Puzzle inputs and answers stay local: https://adventofcode.com/about#faq_copying
+data/
+expectedResults.txt
+
+# Locally edited runners
+*/src/meta/MasterSolver.java
+!2019/src/meta/MasterSolver.java
+!2023/src/meta/MasterSolver.java
+!2024/src/meta/MasterSolver.java
+
+# AoC Tiles: commit only the tile images
+.aoc_tiles/*
+!.aoc_tiles/tiles/
+session.cookie
+.env
+.env.*
