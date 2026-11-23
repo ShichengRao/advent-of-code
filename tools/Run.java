@@ -13,6 +13,9 @@ import java.util.Scanner;
  *
  * Regular solvers expose {@code solve(boolean part1, Scanner in)}; golfed ones expose
  * {@code s(boolean part1, String[] lines)}. A fresh instance is used for each part.
+ * <p>
+ * Run has no package, like the golfed classes, so it can call their package-private s()
+ * without setAccessible. Moving Run into a package would break golfed runs.
  */
 public class Run {
     public static void main(String[] args) throws Throwable {
@@ -22,9 +25,7 @@ public class Run {
         Method method = golf
                 ? cls.getDeclaredMethod("s", boolean.class, String[].class)
                 : cls.getMethod("solve", boolean.class, Scanner.class);
-        method.setAccessible(true);
         Constructor<?> ctor = cls.getDeclaredConstructor();
-        ctor.setAccessible(true);
 
         for (char part : args[2].toCharArray()) {
             boolean part1 = part == '1';

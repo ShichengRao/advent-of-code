@@ -2,7 +2,7 @@ package aoc2022;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 
@@ -16,7 +16,7 @@ public class Day15 extends DayTemplate {
 		List<Integer> alreadyBeacons = new ArrayList<>();
 		List<Range> ranges = new ArrayList<>();
 		while (in.hasNext()) {
-			String[] line = in.nextLine().split("=|,|:");
+			String[] line = in.nextLine().split("[=,:]");
 			int x1 = Integer.parseInt(line[1]);
 			int y1 = Integer.parseInt(line[3]);
 			int x2 = Integer.parseInt(line[5]);
@@ -36,7 +36,7 @@ public class Day15 extends DayTemplate {
 					ranges.add(new Range(sensors.get(i).x - dx, sensors.get(i).x + dx));
 				}
 			}
-			Collections.sort(ranges);
+			ranges.sort(Comparator.naturalOrder());
 			int s = ranges.get(0).start;
 			int e = ranges.get(0).end;
 			for (Range r : ranges) {
@@ -75,10 +75,8 @@ public class Day15 extends DayTemplate {
 					if ((a + b) % 2 == 0) {
 						int x = (b - a) / 2;
 						int y = (b + a) / 2;
-						if (x >= 0 && y >= 0 && x <= 4000000 && y <= 4000000) {
-							if (checkPossible(x, y, sensors, distances) >= 0) {
-								return "" + (((long) x * 4000000) + y);
-							}
+						if (x >= 0 && y >= 0 && x <= 4000000 && y <= 4000000 && checkPossible(x, y, sensors, distances) >= 0) {
+							return "" + (((long) x * 4000000) + y);
 						}
 					}
 				}
@@ -134,7 +132,7 @@ class Range implements Comparable<Range> {
 
 	@Override
 	public int compareTo(Range o) {
-		Range other = (Range) o;
+		Range other = o;
 		if (other.start != start) {
 			return start - other.start;
 		} else {

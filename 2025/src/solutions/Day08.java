@@ -58,7 +58,9 @@ public class Day08 extends DayTemplate {
 }
 
 class Box{
-    int x, y, z;
+    int x;
+    int y;
+    int z;
 
     public Box(int x, int y, int z){
         this.x = x;
@@ -68,7 +70,8 @@ class Box{
 }
 
 class Edge implements Comparable<Edge>{
-    int a, b;
+    int a;
+    int b;
     long dist;
 
     public Edge(int a, int b, long dist){

@@ -8,6 +8,7 @@ import java.util.concurrent.*;
 
 public class TimerRunner {
     private static final String PATH_NAME_PREFIX = "src.solutions.Day";
+    private static final String PART = " part ";
 
     public static void main(String[] args) throws IOException {
         String outputFile = "timing-output.txt";
@@ -22,19 +23,19 @@ public class TimerRunner {
                 for (int part = 1; part <= 2; part++) {
                     File inputFile = new File("./data/day" + zeroFilledDay + ".txt");
                     if (!inputFile.exists()) {
-                        writer.write("Day " + zeroFilledDay + " part " + part + ": Input file not found, skipping.\n");
+                        writer.write("Day " + zeroFilledDay + PART + part + ": Input file not found, skipping.\n");
                         continue;
                     }
 
                     try {
-                        System.out.println("doing day " + day + " part " + part);
+                        System.out.println("doing day " + day + PART + part);
                         Double time = timeSolution(zeroFilledDay, part, inputFile);
-                        writer.write("Day " + zeroFilledDay + " part " + part + " execution time: " + time + " ms\n");
+                        writer.write("Day " + zeroFilledDay + PART + part + " execution time: " + time + " ms\n");
                         totalTime += time;
                     } catch (TimeoutException e) {
-                        writer.write("Day " + zeroFilledDay + " part " + part + ": Execution timed out after 10 seconds.\n");
+                        writer.write("Day " + zeroFilledDay + PART + part + ": Execution timed out after 10 seconds.\n");
                     } catch (Exception e) {
-                        writer.write("Day " + zeroFilledDay + " part " + part + ": Error - " + e.getMessage() + "\n");
+                        writer.write("Day " + zeroFilledDay + PART + part + ": Error - " + e.getMessage() + "\n");
                     }
                 }
             }
@@ -54,13 +55,15 @@ public class TimerRunner {
 
     private static Double timeSolution(String zeroFilledDay, int part, File inputFile) throws Exception {
         ExecutorService executor = Executors.newSingleThreadExecutor();
-        Callable<Double> task = () -> (Double) Class.forName(PATH_NAME_PREFIX + zeroFilledDay)
-                .getMethod("timer", boolean.class, Scanner.class)
-                .invoke(Class.forName(PATH_NAME_PREFIX + zeroFilledDay)
-                                .getDeclaredConstructor()
-                                .newInstance(),
-                        part == 1,
-                        new Scanner(inputFile));
+        Callable<Double> task = () -> {
+            DayTemplate solver = Class.forName(PATH_NAME_PREFIX + zeroFilledDay)
+                    .asSubclass(DayTemplate.class)
+                    .getDeclaredConstructor()
+                    .newInstance();
+            try (Scanner in = new Scanner(inputFile)) {
+                return solver.timer(part == 1, in);
+            }
+        };
 
         Future<Double> future = executor.submit(task);
         try {

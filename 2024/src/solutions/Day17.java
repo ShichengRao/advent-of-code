@@ -3,18 +3,19 @@ package src.solutions;
 import src.meta.DayTemplate;
 import java.util.*;
 
+import static src.meta.Utils.*;
+
 public class Day17 extends DayTemplate {
 
     public String solve(boolean part1, Scanner in) {
         long registerA = 15401536L;
         in.nextLine();
-        long registerB = Long.parseLong(in.nextLine().split(" ")[2]);
-        long registerC = Long.parseLong(in.nextLine().split(" ")[2]);
+        long registerB = longs(in.nextLine())[0];
+        long registerC = longs(in.nextLine())[0];
         in.nextLine();
-        String stringProgram = in.nextLine().split(" ")[1];
         List<Integer> program = new ArrayList<>();
-        for(String s: stringProgram.split(",")){
-            program.add(Integer.parseInt(s));
+        for(long instruction: longs(in.nextLine())){
+            program.add((int) instruction);
         }
         if(part1){
             List<Integer> result = run(program, registerA, registerB, registerC);
@@ -75,11 +76,9 @@ public class Day17 extends DayTemplate {
             if(operator == 2){
                 registerB = combo % 8;
             }
-            if(operator == 3){
-                if(registerA != 0){
-                    instructionPointer = operand;
-                    continue;
-                }
+            if(operator == 3 && registerA != 0){
+                instructionPointer = operand;
+                continue;
             }
             if(operator == 4){
                 registerB ^= registerC;

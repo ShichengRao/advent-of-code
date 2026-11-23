@@ -1,6 +1,7 @@
 package src.solutions;
 
 import src.meta.DayTemplate;
+import src.meta.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,7 +9,6 @@ import java.util.Scanner;
 
 public class Day13 extends DayTemplate {
 
-    List<String> tmp = new ArrayList<>();
     List<Pattern> patterns = new ArrayList<>();
 
     @Override
@@ -65,18 +65,10 @@ public class Day13 extends DayTemplate {
     }
 
     private void parse(Scanner in){
-        tmp = new ArrayList<>();
         patterns = new ArrayList<>();
-        while (in.hasNext()) {
-            String line = in.nextLine();
-            if (line.isEmpty()) {
-                patterns.add(new Pattern(tmp));
-                tmp = new ArrayList<>();
-            } else {
-                tmp.add(line);
-            }
+        for (List<String> section : Utils.readSections(in)) {
+            patterns.add(new Pattern(section));
         }
-        patterns.add(new Pattern(tmp));
     }
 
 }

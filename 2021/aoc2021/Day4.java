@@ -6,7 +6,7 @@ import java.util.*;
 public class Day4 implements DayTemplate{
 	
 	public String solve(boolean part1, Scanner in) throws FileNotFoundException {
-		String[] initial_numbers = in.nextLine().split(",");
+		String[] initialNumbers = in.nextLine().split(",");
 		List<String> inps = new ArrayList<>();
 		int answer = 0; 
 		in.nextLine();
@@ -22,10 +22,10 @@ public class Day4 implements DayTemplate{
 			}
 		}
 		boards.add(new BingoBoard(inps));
-		for(int i = 0; i < initial_numbers.length; i++) {
+		for(int i = 0; i < initialNumbers.length; i++) {
 			for(int j = boards.size() - 1; j >= 0; j--) {
 				BingoBoard b= boards.get(j);
-				int val = Integer.parseInt(initial_numbers[i]);
+				int val = Integer.parseInt(initialNumbers[i]);
 				if(b.callNum(val)!=-1) {
 					if(boards.size() == 1 || part1) {
 						return ""+b.callNum(val);

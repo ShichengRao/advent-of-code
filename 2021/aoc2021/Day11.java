@@ -29,13 +29,13 @@ public class Day11 {
 	}
 	
 	private int iterate(Map<Coord, Integer> inps) {
-		inps.keySet().stream().forEach(a->inps.put(a, inps.get(a) + 1));
+		inps.keySet().forEach(a->inps.put(a, inps.get(a) + 1));
 		int cycles = 0;
 		List<Coord> flashed = new ArrayList<>();
 		while(flash(inps, flashed)){
 			cycles++;
 		}
-		flashed.stream().forEach(a->inps.put(a, 0));
+		flashed.forEach(a->inps.put(a, 0));
 		return cycles;
 	}
 	
@@ -50,14 +50,14 @@ public class Day11 {
 	}
 	
 	private boolean check(Map<Coord, Integer> inps) {
-		return inps.keySet().stream().mapToInt(a -> inps.get(a)).sum() == 0;
+		return inps.keySet().stream().mapToInt(inps::get).sum() == 0;
 	}
 	
 	private record Coord(int x, int y) {
         List<Coord> adjacents() {
         	List<Coord> neighbors = new ArrayList<>();
-        	int[] xs = new int[] {1,1,1,0,0,-1,-1,-1};
-    		int[] ys = new int[] {1,0,-1,1,-1,1,0,-1};
+        	int[] xs = {1,1,1,0,0,-1,-1,-1};
+    		int[] ys = {1,0,-1,1,-1,1,0,-1};
     		for(int k = 0; k < xs.length; k++) {
 				neighbors.add(new Coord(x + xs[k], y + ys[k]));
     		}

@@ -18,8 +18,8 @@ public class Day09 extends DayTemplate {
             ys.add(Integer.parseInt(line[1]));
             coords.add(new Coordinate(xs.getLast(), ys.getLast()));
         }
-        Collections.sort(xs);
-        Collections.sort(ys);
+        xs.sort(Comparator.naturalOrder());
+        ys.sort(Comparator.naturalOrder());
 
         for (int i = 0; i < coords.size(); i++) {
             for (int k = i + 1; k < coords.size(); k++) {
@@ -37,11 +37,9 @@ public class Day09 extends DayTemplate {
 
                         // Check only x-coordinates that exist in the range
                         for (int x : xs) {
-                            if (x >= minX && x <= maxX) {
-                                if (!inLoop(x, first.y, coords) || !inLoop(x, second.y, coords)) {
-                                    allEdgesIn = false;
-                                    break;
-                                }
+                            if (x >= minX && x <= maxX && (!inLoop(x, first.y, coords) || !inLoop(x, second.y, coords))) {
+                                allEdgesIn = false;
+                                break;
                             }
                         }
 
@@ -50,11 +48,9 @@ public class Day09 extends DayTemplate {
                             int maxY = Math.max(first.y, second.y);
 
                             for (int y : ys) {
-                                if (y >= minY && y <= maxY) {
-                                    if (!inLoop(first.x, y, coords) || !inLoop(second.x, y, coords)) {
-                                        allEdgesIn = false;
-                                        break;
-                                    }
+                                if (y >= minY && y <= maxY && (!inLoop(first.x, y, coords) || !inLoop(second.x, y, coords))) {
+                                    allEdgesIn = false;
+                                    break;
                                 }
                             }
                         }
@@ -79,10 +75,8 @@ public class Day09 extends DayTemplate {
                 if (y >= Math.min(curr.y, next.y) && y <= Math.max(curr.y, next.y)) {
                     return true;
                 }
-            } else if (curr.y == next.y && curr.y == y) {
-                if (x >= Math.min(curr.x, next.x) && x <= Math.max(curr.x, next.x)) {
-                    return true;
-                }
+            } else if (curr.y == next.y && curr.y == y && x >= Math.min(curr.x, next.x) && x <= Math.max(curr.x, next.x)) {
+                return true;
             }
         }
 

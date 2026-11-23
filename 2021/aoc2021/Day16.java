@@ -6,13 +6,13 @@ import java.util.*;
 public class Day16 {
 
 	public String solve(boolean part1, Scanner in) {
-		String b = "";
+		StringBuilder b = new StringBuilder();
 		String[] hex = in.nextLine().split("");
 		for(int i = 0; i < hex.length; i++) {
 			Hex h = new Hex(hex[i]);
-			b+= h.binary;
+			b.append(h.binary);
 		}
-		String[] binary = b.split("");
+		String[] binary = b.toString().split("");
 		Packet packet = new Packet(binary);
 		return "" + (part1?packet.getTotalVersions():packet.value());
 	}
@@ -37,35 +37,35 @@ class Hex{
 
 class Packet{
 	long version;
-	long type_id;
+	long typeId;
 	List<Packet> subPackets;
 	long subPacketLength;
 	long value = 0;
 	long length;
-	long length_type_id;
+	long lengthTypeId;
 	
 	public Packet(String[] binary) {
 		subPackets = new ArrayList<>();
 		int index = 0;
 		version = Long.parseLong(readN(binary, 3, index),2);
 		index+=3;
-		type_id = Long.parseLong(readN(binary, 3, index),2);
+		typeId = Long.parseLong(readN(binary, 3, index),2);
 		index+=3;
-		if(type_id == 4) {
-			String binaryRep = "";
+		if(typeId == 4) {
+			StringBuilder binaryRep = new StringBuilder();
 			while(binary[index].equals("1")) {
-				binaryRep+=readN(binary, 4, index + 1);
+				binaryRep.append(readN(binary, 4, index + 1));
 				index+=5;
 			}
-			binaryRep+=readN(binary, 4, index + 1);
+			binaryRep.append(readN(binary, 4, index + 1));
 			index+=5;
-			value = Long.parseLong(binaryRep,2);
+			value = Long.parseLong(binaryRep.toString(),2);
 			length = index;
 		}
 		else {
-			length_type_id = Long.parseLong(binary[index],2);
+			lengthTypeId = Long.parseLong(binary[index],2);
 			index++;
-			if(length_type_id == 0) {
+			if(lengthTypeId == 0) {
 				subPacketLength = 15;
 				String binaryRep = readN(binary, subPacketLength, index);
 				index+=subPacketLength;
@@ -80,7 +80,7 @@ class Packet{
 				}
 				length = index;
 			}
-			if(length_type_id == 1) {
+			if(lengthTypeId == 1) {
 				subPacketLength = 11;
 				String binaryRep = readN(binary, subPacketLength, index);
 				index+=subPacketLength;
@@ -99,13 +99,7 @@ class Packet{
 	}
 	
 	private String readN(String[] binary, long n, int index) {
-		int counter = 0;
-		String result = "";
-		while(counter < n) {
-			result+=binary[index + counter];
-			counter++;
-		}
-		return result;
+		return String.join("", Arrays.asList(binary).subList(index, index + (int) n));
 	}
 	
 	public long getTotalVersions() {
@@ -117,31 +111,31 @@ class Packet{
 	}
 	
 	public long value() {
-		if(type_id == 4) {
+		if(typeId == 4) {
 			return value;
 		}
-		if(type_id == 0) {
+		if(typeId == 0) {
 			long answer = 0;
 			for(Packet packet: subPackets) {
 				answer+= packet.value();
 			}
 			return answer;
 		}
-		if(type_id == 1) {
+		if(typeId == 1) {
 			long answer = 1;
 			for(Packet packet: subPackets) {
 				answer*= packet.value();
 			}
 			return answer;
 		}
-		if(type_id == 2) {
+		if(typeId == 2) {
 			long answer = Long.MAX_VALUE;
 			for(Packet packet: subPackets) {
 				answer = Math.min(answer,  packet.value());
 			}
 			return answer;
 		}
-		if(type_id == 3) {
+		if(typeId == 3) {
 			long answer = Long.MIN_VALUE;
 			for(Packet packet: subPackets) {
 				answer = Math.max(answer,  packet.value());
@@ -149,13 +143,13 @@ class Packet{
 			return answer;
 		}
 		
-		if(type_id == 5) {
+		if(typeId == 5) {
 			return (subPackets.get(0).value() > subPackets.get(1).value())?1:0;
 		}
-		if(type_id == 6) {
+		if(typeId == 6) {
 			return (subPackets.get(0).value() < subPackets.get(1).value())?1:0;
 		}
-		if(type_id == 7) {
+		if(typeId == 7) {
 			return (subPackets.get(0).value() == subPackets.get(1).value())?1:0;
 		}
 		

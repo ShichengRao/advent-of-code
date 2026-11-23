@@ -21,7 +21,7 @@ public class Day16 extends DayTemplate {
 			Valve valve = new Valve(line[1], Integer.parseInt(line[4].substring(5, line[4].length() - 1)), tunnels);
 			valves.add(valve);
 		}
-		Collections.sort(valves, (a, b) -> a.name.compareTo(b.name));
+		valves.sort((a, b) -> a.name.compareTo(b.name));
 		for (int i = 0; i < valves.size(); i++) {
 			Valve valve = valves.get(i);
 			if (valve.flow > 0 || valves.get(i).name.equals("AA")) {
@@ -67,18 +67,16 @@ public class Day16 extends DayTemplate {
 		}
 		helper(part1 ? 30 : 26, 0, 0, 0, 0);
 		if (part1) {
-			for (Integer key : cache.keySet()) {
-				if (cache.get(key) > answer) {
-					answer = cache.get(key);
+			for (int value : cache.values()) {
+				if (value > answer) {
+					answer = value;
 				}
 			}
 		} else {
-			for (Integer key1 : cache.keySet()) {
-				for (Integer key2 : cache.keySet()) {
-					if ((key1 & key2) == 0) {
-						if (cache.get(key1) + cache.get(key2) > answer) {
-							answer = cache.get(key1) + cache.get(key2);
-						}
+			for (Map.Entry<Integer, Integer> first : cache.entrySet()) {
+				for (Map.Entry<Integer, Integer> second : cache.entrySet()) {
+					if ((first.getKey() & second.getKey()) == 0 && first.getValue() + second.getValue() > answer) {
+						answer = first.getValue() + second.getValue();
 					}
 				}
 			}

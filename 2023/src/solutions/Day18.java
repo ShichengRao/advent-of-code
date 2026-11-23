@@ -1,6 +1,7 @@
 package src.solutions;
 
 import src.meta.DayTemplate;
+import src.objects.Direction;
 
 import java.util.*;
 
@@ -9,9 +10,6 @@ public class Day18 extends DayTemplate {
     int max;
 
     int max2;
-
-    int[] xs = new int[]{1, 0, -1, 0};
-    int[] ys = new int[]{0, -1, 0, 1};
 
     @Override
     public String[] fullSolve(Scanner in) {
@@ -41,8 +39,8 @@ public class Day18 extends DayTemplate {
         long x = 0;
         long y = 0;
         for (Instruction instruction : instructions) {
-            x += (long) instruction.distance * xs[instruction.direction];
-            y += (long) instruction.distance * ys[instruction.direction];
+            x += (long) instruction.distance * instruction.direction.dx;
+            y += (long) instruction.distance * instruction.direction.dy;
             xVals.add(x);
             yVals.add(y);
         }
@@ -50,7 +48,7 @@ public class Day18 extends DayTemplate {
             answer -= xVals.get(i) * yVals.get((i + 1) % xVals.size());
             answer += xVals.get((i + 1) % xVals.size()) * yVals.get(i);
         }
-        answer /= 2;
+        answer = Math.abs(answer) / 2;
         answer += max / 2 + 1;
         return answer;
     }
@@ -67,10 +65,10 @@ public class Day18 extends DayTemplate {
         long x2 = 0;
         long y2 = 0;
         for (DoubleInstruction instruction : instructions) {
-            x1 += (long) instruction.distance1 * xs[instruction.direction1];
-            y1 += (long) instruction.distance1 * ys[instruction.direction1];
-            x2 += (long) instruction.distance2 * xs[instruction.direction2];
-            y2 += (long) instruction.distance2 * ys[instruction.direction2];
+            x1 += (long) instruction.distance1 * instruction.direction1.dx;
+            y1 += (long) instruction.distance1 * instruction.direction1.dy;
+            x2 += (long) instruction.distance2 * instruction.direction2.dx;
+            y2 += (long) instruction.distance2 * instruction.direction2.dy;
             xVals1.add(x1);
             yVals1.add(y1);
             xVals2.add(x2);
@@ -84,9 +82,9 @@ public class Day18 extends DayTemplate {
             answer2 -= xVals2.get(i) * yVals2.get((i + 1) % xVals2.size());
             answer2 += xVals2.get((i + 1) % xVals2.size()) * yVals2.get(i);
         }
-        answer1 /= 2;
+        answer1 = Math.abs(answer1) / 2;
         answer1 += max / 2 + 1;
-        answer2 /= 2;
+        answer2 = Math.abs(answer2) / 2;
         answer2 += max2 / 2 + 1;
         return new long[]{answer1, answer2};
     }
@@ -118,16 +116,15 @@ public class Day18 extends DayTemplate {
 
 class Instruction {
     int distance;
-    int direction;
+    Direction direction;
 
     public Instruction(String line, boolean part1) {
         if (part1) {
-            Map<String, Integer> map = Map.of("R", 0, "D", 1, "L", 2, "U", 3);
             distance = Integer.parseInt(line.split(" ")[1]);
-            direction = map.get(line.split(" ")[0]);
+            direction = Direction.of(line.charAt(0));
         } else {
             String hex = line.split("[#)]")[1];
-            direction = Integer.parseInt(hex.substring(hex.length() - 1));
+            direction = Direction.of("RDLU".charAt(Integer.parseInt(hex.substring(hex.length() - 1))));
             distance = Integer.parseInt(hex.substring(0, hex.length() - 1), 16);
         }
     }
@@ -136,18 +133,17 @@ class Instruction {
 class DoubleInstruction {
     int distance1;
 
-    int direction1;
+    Direction direction1;
 
     int distance2;
 
-    int direction2;
+    Direction direction2;
 
     public DoubleInstruction(String line){
-        Map<String, Integer> map = Map.of("R", 0, "D", 1, "L", 2, "U", 3);
         distance1 = Integer.parseInt(line.split(" ")[1]);
-        direction1 = map.get(line.split(" ")[0]);
+        direction1 = Direction.of(line.charAt(0));
         String hex = line.split("[#)]")[1];
-        direction2 = Integer.parseInt(hex.substring(hex.length() - 1));
+        direction2 = Direction.of("RDLU".charAt(Integer.parseInt(hex.substring(hex.length() - 1))));
         distance2 = Integer.parseInt(hex.substring(0, hex.length() - 1), 16);
     }
 

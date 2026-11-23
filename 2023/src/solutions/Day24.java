@@ -1,6 +1,7 @@
 package src.solutions;
 
 import src.meta.DayTemplate;
+import src.meta.Utils;
 import src.objects.Coordinate;
 
 import java.util.*;
@@ -193,12 +194,12 @@ class Hailstone {
     int zvel;
 
     public Hailstone(String line) {
-        String[] ends = line.split("@");
-        x = Long.parseLong(ends[0].split(",")[0].trim());
-        y = Long.parseLong(ends[0].split(",")[1].trim());
-        z = Long.parseLong(ends[0].split(",")[2].trim());
-        xvel = Integer.parseInt(ends[1].split(",")[0].trim());
-        yvel = Integer.parseInt(ends[1].split(",")[1].trim());
-        zvel = Integer.parseInt(ends[1].split(",")[2].trim());
+        long[] numbers = Utils.longs(line);
+        x = numbers[0];
+        y = numbers[1];
+        z = numbers[2];
+        xvel = (int) numbers[3];
+        yvel = (int) numbers[4];
+        zvel = (int) numbers[5];
     }
 }

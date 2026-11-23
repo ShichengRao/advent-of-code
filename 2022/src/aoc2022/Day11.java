@@ -2,7 +2,7 @@ package aoc2022;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 
@@ -26,7 +26,11 @@ public class Day11 extends DayTemplate {
 			}
 			String[] itms = line.split(": ")[1].split(" ");
 			if (line.startsWith("  Operation")) {
-				consts[0] = itms[4].equals("old") ? 2 : itms[3].equals("+") ? 0 : 1;
+				if (itms[4].equals("old")) {
+					consts[0] = 2;
+				} else {
+					consts[0] = itms[3].equals("+") ? 0 : 1;
+				}
 				consts[1] = Integer.parseInt(itms[4].equals("old") ? "0" : itms[4]);
 			}
 			if (line.startsWith("  Test")) {
@@ -52,7 +56,7 @@ public class Day11 extends DayTemplate {
 		for (Monkey monkey : monkeys) {
 			inspects.add(monkey.counter);
 		}
-		Collections.sort(inspects);
+		inspects.sort(Comparator.naturalOrder());
 		return "" + (inspects.get(inspects.size() - 2) * inspects.get(inspects.size() - 1));
 	}
 }
@@ -86,7 +90,7 @@ class Monkey {
 				item /= 3;
 			}
 			item %= modulo;
-			monkeys.get((item % consts[2] == 0) ? consts[3] : consts[4]).items.add(item);
+			monkeys.get(consts[(item % consts[2] == 0) ? 3 : 4]).items.add(item);
 			counter++;
 		}
 		items.clear();

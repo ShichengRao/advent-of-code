@@ -19,7 +19,7 @@ public class Day10 extends DayTemplate {
 			values.add(current);
 		}
 		if (part1) {
-			int[] signals = new int[] { 20, 60, 100, 140, 180, 220 };
+			int[] signals = { 20, 60, 100, 140, 180, 220 };
 			for (int signal : signals) {
 				answer += signal * values.get((signal >= values.size()) ? (values.size() - 1) : (signal - 1));
 			}

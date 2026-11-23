@@ -3,6 +3,7 @@ package aoc2022;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 
@@ -27,7 +28,7 @@ public class Day13 extends DayTemplate {
 			answer = 1;
 			packets.add(new Packet("[[2]]"));
 			packets.add(new Packet("[[6]]"));
-			Collections.sort(packets);
+			packets.sort(Comparator.naturalOrder());
 			Collections.reverse(packets);
 			for (int i = 0; i < packets.size(); i++) {
 				if (packets.get(i).str.equals("[[2]]") || packets.get(i).str.equals("[[6]]")) {
@@ -56,18 +57,22 @@ class Packet implements Comparable<Packet> {
 		} else {
 			packet = packet.substring(1, packet.length() - 1);
 			int level = 0;
-			String tmp = "";
+			StringBuilder tmp = new StringBuilder();
 			for (char c : packet.toCharArray()) {
 				if (c == ',' && level == 0) {
-					children.add(new Packet(tmp));
-					tmp = "";
+					children.add(new Packet(tmp.toString()));
+					tmp.setLength(0);
 				} else {
-					level += (c == '[') ? 1 : (c == ']') ? -1 : 0;
-					tmp += c;
+					if (c == '[') {
+						level++;
+					} else if (c == ']') {
+						level--;
+					}
+					tmp.append(c);
 				}
 			}
-			if (!tmp.equals("")) {
-				children.add(new Packet(tmp));
+			if (tmp.length() > 0) {
+				children.add(new Packet(tmp.toString()));
 			}
 			integer = false;
 		}

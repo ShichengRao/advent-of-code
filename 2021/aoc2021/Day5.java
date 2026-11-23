@@ -17,15 +17,15 @@ public class Day5 implements DayTemplate{
 				line.addPoints(grid);
 			}
 		}
-		return "" + Arrays.stream(grid).flatMapToInt(x -> Arrays.stream(x)).filter(x-> x>=2).count();
+		return "" + Arrays.stream(grid).flatMapToInt(Arrays::stream).filter(x-> x>=2).count();
 	}
 }
 
 class Line{
-	private int x1;
-	private int x2;
-	private int y1;
-	private int y2;
+	private final int x1;
+	private final int x2;
+	private final int y1;
+	private final int y2;
 	public Line(String line) {
 		String[] parts = line.split("->");
 		x1 = Integer.parseInt(parts[0].trim().split(",")[0]);
@@ -51,7 +51,7 @@ class Line{
 			}
 		}
 		else {
-			int slope = (deltay*deltax)>0?1:(deltay*deltax)<0?-1:0;
+			int slope = Integer.signum(deltay*deltax);
 			for(int i = 0; i <= Math.abs(deltax); i++) {
 				grid[Math.min(x1, x2) + i][((slope <0)?Math.max(y1, y2):Math.min(y1, y2)) + (i * slope)]++;
 			}

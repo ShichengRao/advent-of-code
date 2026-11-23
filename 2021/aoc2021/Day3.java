@@ -24,21 +24,22 @@ public class Day3{
 			}
 			return "" + Integer.parseInt(helper(inps, "",true),2) * Integer.parseInt(helper(newNums,"",false),2);
 		}
-		String epsilon = "";
-		String gamma = "";
+		StringBuilder epsilon = new StringBuilder();
+		StringBuilder gamma = new StringBuilder();
 		for(int i = 0; i < differentials.length; i++) {
-			gamma+=differentials[i] > 0?"1":"0";
-			epsilon+=differentials[i] > 0?"0":"1";
+			gamma.append(differentials[i] > 0?"1":"0");
+			epsilon.append(differentials[i] > 0?"0":"1");
 		}
-		return "" + Integer.parseInt(gamma,2) * Integer.parseInt(epsilon,2);
+		return "" + Integer.parseInt(gamma.toString(),2) * Integer.parseInt(epsilon.toString(),2);
 	}
 	
-	public static String helper_golfed(List<String> n, String p, boolean m) {
+	public static String helperGolfed(List<String> n, String p, boolean m) {
 		final String f=p;
 		n = n.stream().filter(v->v.startsWith(f)).toList();
 		if(n.size()==1)
 			return n.get(0);
-		return helper(n,p+(n.stream().mapToInt(s -> s.charAt(f.length())=='1'?1:-1).sum()>=0^m?"0":"1"),m);
+		int b=n.stream().mapToInt(s -> s.charAt(f.length())=='1'?1:-1).sum();
+		return helper(n,p+(b>=0^m?"0":"1"),m);
 	}
 	
 	public static String helper(List<String> nums, String prefix, boolean most) {
@@ -47,8 +48,8 @@ public class Day3{
 		if(nums.size() == 1) {
 			return nums.get(0);
 		}
-		boolean more_ones = nums.stream().mapToInt(num -> num.charAt(prefix_final.length()) == '1'?1:-1).sum() >= 0;
-		prefix += more_ones ^ most?"0":"1";
+		boolean moreOnes = nums.stream().mapToInt(num -> num.charAt(prefix_final.length()) == '1'?1:-1).sum() >= 0;
+		prefix += moreOnes ^ most?"0":"1";
 		return helper(nums,prefix, most);
 	}
 }

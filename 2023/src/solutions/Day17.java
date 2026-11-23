@@ -7,10 +7,10 @@ public class Day17 extends DayTemplate {
 
     int[][][] debug;
 
-    int[] xs = new int[]{-1, 0, 0, 1};
-    int[] ys = new int[]{0, -1, 1, 0};
+    int[] xs = {-1, 0, 0, 1};
+    int[] ys = {0, -1, 1, 0};
 
-    int[][] turns = new int[][] {new int[]{1,2,3,4}, new int[]{2,3}, new int[]{1,4}, new int[]{1,4}, new int[]{2,3}};
+    int[][] turns = {{1,2,3,4}, {2,3}, {1,4}, {1,4}, {2,3}};
 
     @Override
     public String[] fullSolve(Scanner in) {

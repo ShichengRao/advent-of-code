@@ -47,7 +47,7 @@ public class Day01 extends DayTemplate {
     }
 
     private int findFirstDigit(String line, boolean forwards, boolean part1) {
-        String[] digits = new String[]{"one", "two", "three", "four", "five", "six", "seven", "eight", "nine"};
+        String[] digits = {"one", "two", "three", "four", "five", "six", "seven", "eight", "nine"};
         char[] chars = line.toCharArray();
         for (int i = 0; i < chars.length; i++) {
             int index = forwards ? i : (chars.length - i - 1);

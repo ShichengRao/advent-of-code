@@ -84,15 +84,11 @@ public class Day12 extends DayTemplate {
         long perimeter = garden.size() * 4L;
         for(Coordinate c1: garden){
             for(Coordinate c2: garden){
-                if(c1.x == c2.x){
-                    if(Math.abs(c1.y - c2.y) == 1){
-                        perimeter--;
-                    }
+                if(c1.x == c2.x && Math.abs(c1.y - c2.y) == 1){
+                    perimeter--;
                 }
-                if(c1.y == c2.y){
-                    if(Math.abs(c1.x - c2.x) == 1){
-                        perimeter--;
-                    }
+                if(c1.y == c2.y && Math.abs(c1.x - c2.x) == 1){
+                    perimeter--;
                 }
             }
         }

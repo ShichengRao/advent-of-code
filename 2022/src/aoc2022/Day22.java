@@ -17,23 +17,27 @@ public class Day22 extends DayTemplate {
 			String line = in.nextLine();
 			if (line.contains(".")) {
 				for (int i = 0; i < line.length(); i++) {
-					grid[counter][i] = (line.charAt(i) == '.') ? 1 : (line.charAt(i) == '#') ? 2 : 0;
+					grid[counter][i] = switch (line.charAt(i)) {
+						case '.' -> 1;
+						case '#' -> 2;
+						default -> 0;
+					};
 				}
 			} else {
 				if (line.length() > 2) {
-					String tmp = "";
+					StringBuilder tmp = new StringBuilder();
 					for (int i = 0; i < line.length(); i++) {
 						if (line.charAt(i) == 'L' || line.charAt(i) == 'R') {
-							instructions.add(tmp);
-							tmp = "";
+							instructions.add(tmp.toString());
+							tmp.setLength(0);
 							instructions.add("" + line.charAt(i));
 						} else {
-							tmp += line.charAt(i);
+							tmp.append(line.charAt(i));
 						}
 
 					}
-					if (!tmp.equals("")) {
-						instructions.add(tmp);
+					if (tmp.length() > 0) {
+						instructions.add(tmp.toString());
 					}
 				}
 			}
@@ -55,8 +59,8 @@ public class Day22 extends DayTemplate {
 				continue;
 			}
 			int distance = Integer.parseInt(instruction);
-			int[] ydel = new int[] { 1, 0, -1, 0 };
-			int[] xdel = new int[] { 0, 1, 0, -1 };
+			int[] ydel = { 1, 0, -1, 0 };
+			int[] xdel = { 0, 1, 0, -1 };
 			for (int i = 0; i < distance; i++) {
 				int origx = xloc;
 				int origy = yloc;

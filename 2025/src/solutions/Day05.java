@@ -1,6 +1,7 @@
 package src.solutions;
 
 import src.meta.DayTemplate;
+import src.meta.Utils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -11,14 +12,11 @@ public class Day05 extends DayTemplate {
 
     public String solve(boolean part1, Scanner in) {
         long answer = 0;
+        List<List<String>> sections = Utils.readSections(in);
         List<IDRange> ranges = new ArrayList<>();
-        while (in.hasNextLine()) {
-            String l = in.nextLine();
-            if(l.isEmpty()){
-                break;
-            }
-            String[] line = l.split("-");
-            ranges.add(new IDRange(Long.parseLong(line[0]), Long.parseLong(line[1])));
+        for (String l : sections.get(0)) {
+            long[] bounds = Utils.longs(l);
+            ranges.add(new IDRange(bounds[0], bounds[1]));
         }
         Collections.sort(ranges);
         if(!part1){
@@ -35,8 +33,8 @@ public class Day05 extends DayTemplate {
             answer += currRange.high - currRange.low + 1;
         }
         else{
-            while (in.hasNextLine()) {
-                long line = Long.parseLong(in.nextLine());
+            for (String l : sections.get(1)) {
+                long line = Long.parseLong(l);
                 for(IDRange range: ranges){
                     if(range.contains(line)){
                         answer++;

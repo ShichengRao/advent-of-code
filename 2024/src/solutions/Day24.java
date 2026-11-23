@@ -50,7 +50,7 @@ public class Day24 extends DayTemplate {
                     outputs.add(key);
                 }
             }
-            Collections.sort(outputs);
+            outputs.sort(Comparator.naturalOrder());
             Collections.reverse(outputs);
 
             for(String output: outputs){
@@ -124,36 +124,28 @@ public class Day24 extends DayTemplate {
            // intermediate ands and outputs
             for(Instruction instruction: instructions){
                 if(instruction.operation.equals("AND")){
-                    if(propagateBits.containsKey(instruction.firstReg)){
-                        if(intermediateOrs.containsKey(instruction.secondReg)){
-                            int level = propagateBits.get(instruction.firstReg);
-                            intermediateAnds.put(instruction.output, level);
-                            continue;
-                        }
+                    if(propagateBits.containsKey(instruction.firstReg) && intermediateOrs.containsKey(instruction.secondReg)){
+                        int level = propagateBits.get(instruction.firstReg);
+                        intermediateAnds.put(instruction.output, level);
+                        continue;
                     }
-                    if(propagateBits.containsKey(instruction.secondReg)){
-                        if(intermediateOrs.containsKey(instruction.firstReg)){
-                            int level = propagateBits.get(instruction.secondReg);
-                            intermediateAnds.put(instruction.output, level);
-                            continue;
-                        }
+                    if(propagateBits.containsKey(instruction.secondReg) && intermediateOrs.containsKey(instruction.firstReg)){
+                        int level = propagateBits.get(instruction.secondReg);
+                        intermediateAnds.put(instruction.output, level);
+                        continue;
                     }
                     potentialSwaps.add(instruction);
                 }
                 if(instruction.operation.equals("XOR")){
-                    if(propagateBits.containsKey(instruction.firstReg)){
-                        if(intermediateOrs.containsKey(instruction.secondReg)){
-                            int level = propagateBits.get(instruction.firstReg);
-                            outputs.put(instruction.output, level);
-                            continue;
-                        }
+                    if(propagateBits.containsKey(instruction.firstReg) && intermediateOrs.containsKey(instruction.secondReg)){
+                        int level = propagateBits.get(instruction.firstReg);
+                        outputs.put(instruction.output, level);
+                        continue;
                     }
-                    if(propagateBits.containsKey(instruction.secondReg)){
-                        if(intermediateOrs.containsKey(instruction.firstReg)){
-                            int level = propagateBits.get(instruction.secondReg);
-                            outputs.put(instruction.output, level);
-                            continue;
-                        }
+                    if(propagateBits.containsKey(instruction.secondReg) && intermediateOrs.containsKey(instruction.firstReg)){
+                        int level = propagateBits.get(instruction.secondReg);
+                        outputs.put(instruction.output, level);
+                        continue;
                     }
                     potentialSwaps.add(instruction);
                 }

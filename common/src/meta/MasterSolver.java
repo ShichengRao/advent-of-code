@@ -32,7 +32,7 @@ public class MasterSolver {
 
     public static void main(String[] args) throws Exception {
         List<Integer> days = new ArrayList<>();
-        boolean[] parts = new boolean[]{true, false};
+        boolean[] parts = {true, false};
         boolean runTimer = false;
         boolean timeFullDays = false;
         boolean correctnessCheck = false;
@@ -94,31 +94,31 @@ public class MasterSolver {
             String zeroFilledDay = zeroFill(day);
             Class<?> cls = dayClass(day);
             File file = inputFile(day);
-            if (cls == null || !file.exists()) {
-                continue;
-            }
-            if (!useGolfed && (boolean) cls.getMethod("exclude").invoke(newInstance(cls))) {
+            if (cls == null || !file.exists() || (!useGolfed && newDay(cls).exclude())) {
                 continue;
             }
             if (fullDays) {
-                double time = (Double) cls.getMethod("dayTimer", Scanner.class)
-                        .invoke(newInstance(cls), new Scanner(file));
+                double time;
+                try (Scanner in = new Scanner(file)) {
+                    time = newDay(cls).dayTimer(in);
+                }
                 System.out.println("Day " + zeroFilledDay + " execution time: " + time);
                 totalTime += time;
-                continue;
-            }
-            for (int part = 1; part <= 2; part++) {
-                double time;
-                if (useGolfed) {
-                    long start = System.nanoTime();
-                    solve(cls, part == 1, file);
-                    time = (System.nanoTime() - start) / 1000000.0;
-                } else {
-                    time = (Double) cls.getMethod("timer", boolean.class, Scanner.class)
-                            .invoke(newInstance(cls), part == 1, new Scanner(file));
+            } else {
+                for (int part = 1; part <= 2; part++) {
+                    double time;
+                    if (useGolfed) {
+                        long start = System.nanoTime();
+                        solve(cls, part == 1, file);
+                        time = (System.nanoTime() - start) / 1000000.0;
+                    } else {
+                        try (Scanner in = new Scanner(file)) {
+                            time = newDay(cls).timer(part == 1, in);
+                        }
+                    }
+                    System.out.println("Day " + zeroFilledDay + PART + part + " execution time: " + time);
+                    totalTime += time;
                 }
-                System.out.println("Day " + zeroFilledDay + PART + part + " execution time: " + time);
-                totalTime += time;
             }
         }
         System.out.println("Total execution time (ms): " + totalTime);
@@ -179,22 +179,31 @@ public class MasterSolver {
         }
     }
 
-    private static Object newInstance(Class<?> cls) throws Exception {
-        Constructor<?> ctor = cls.getDeclaredConstructor();
-        ctor.setAccessible(true);
-        return ctor.newInstance();
+    /** A new instance of a regular (not golfed) day; every DayNN class extends DayTemplate. */
+    private static DayTemplate newDay(Class<?> cls) throws ReflectiveOperationException {
+        return cls.asSubclass(DayTemplate.class).getDeclaredConstructor().newInstance();
     }
 
     private static String solve(Class<?> cls, boolean part1, File file) throws Exception {
-        Object solver = newInstance(cls);
         if (useGolfed) {
-            Method m = cls.getDeclaredMethod("s", boolean.class, String[].class);
-            m.setAccessible(true);
-            return String.valueOf(m.invoke(solver, part1, Files.readAllLines(file.toPath()).toArray(String[]::new)));
+            return solveGolfed(cls, part1, file);
         }
         try (Scanner in = new Scanner(file)) {
-            Method m = cls.getDeclaredMethod("solve", boolean.class, Scanner.class);
-            return (String) m.invoke(solver, part1, in);
+            return newDay(cls).solve(part1, in);
         }
+    }
+
+    /**
+     * Golfed classes (A, B, ...) are package-private, have no package and share no type, since
+     * "public" or "extends DayTemplate" would cost characters. Calling s() from src.meta
+     * therefore needs reflection and setAccessible.
+     */
+    private static String solveGolfed(Class<?> cls, boolean part1, File file) throws Exception {
+        Constructor<?> ctor = cls.getDeclaredConstructor();
+        ctor.setAccessible(true); // NOSONAR golfed classes are package-private on purpose
+        Method s = cls.getDeclaredMethod("s", boolean.class, String[].class);
+        s.setAccessible(true); // NOSONAR golfed classes are package-private on purpose
+        String[] lines = Files.readAllLines(file.toPath()).toArray(String[]::new);
+        return String.valueOf(s.invoke(ctor.newInstance(), part1, lines));
     }
 }

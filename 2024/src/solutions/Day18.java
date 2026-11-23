@@ -42,28 +42,7 @@ public class Day18 extends DayTemplate {
         for(int i = 0; i < limit; i++){
             grid[memoryBlock.get(i).x][memoryBlock.get(i).y] = 1;
         }
-        Set<Coordinate> lst = new HashSet<>();
-        lst.add(new Coordinate(0,0));
-        int counter = 0;
-        Coordinate end = new Coordinate(grid.length -1, grid.length - 1);
-        Set<Coordinate> allSeen = new HashSet<>();
-        while(!lst.contains(end) && counter < grid.length * grid[0].length * 2){
-            counter++;
-            allSeen.addAll(lst);
-            Set<Coordinate> newList = new HashSet<>();
-            for(Coordinate c: lst){
-                for(Coordinate neighbor: getNeighbors(c.x, c.y, grid)){
-                    if(grid[neighbor.x][neighbor.y] != 1 && !allSeen.contains(neighbor)){
-                        newList.add(neighbor);
-                    }
-                }
-            }
-            lst = newList;
-        }
-        if(counter >= grid.length * grid[0].length){
-            return -1;
-        }
-        return counter;
-
+        int[][] distance = distances(grid, new Coordinate(0,0), value -> value != 1);
+        return distance[grid.length - 1][grid.length - 1];
     }
 }

@@ -10,9 +10,9 @@ public class Day22 extends DayTemplate {
     int maxY = 0;
     int maxZ = 0;
 
-    int[] xs = new int[]{1, 0, 0};
-    int[] ys = new int[]{0, 1, 0};
-    int[] zs = new int[]{0, 0, 1};
+    int[] xs = {1, 0, 0};
+    int[] ys = {0, 1, 0};
+    int[] zs = {0, 0, 1};
 
     int[][][] grid;
 
@@ -112,7 +112,7 @@ public class Day22 extends DayTemplate {
     }
 
     private void assignBricksToGrid(){
-        Collections.sort(bricks);
+        bricks.sort(Comparator.naturalOrder());
         Collections.reverse(bricks);
         for (int i = 0; i < bricks.size(); i++) {
             bricks.get(i).id = i;

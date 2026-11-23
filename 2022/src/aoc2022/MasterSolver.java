@@ -17,8 +17,8 @@ public class MasterSolver {
 		boolean totalTimer = false;
 		boolean exclusionTimer = true;
 		useGolfed = false;
-		int[] days = new int[] { };
-		boolean[] parts = new boolean[] { true, false };
+		int[] days = { };
+		boolean[] parts = { true, false };
 
 		// Do not change anything in the method below this comment
 

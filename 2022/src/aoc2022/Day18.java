@@ -32,9 +32,9 @@ public class Day18 extends DayTemplate {
 
 	public int[] iterate(int[][][] space, int target1, int target2, boolean change, boolean decrement) {
 		int[] answer = new int[2];
-		int[] deltax = new int[] { 1, -1, 0, 0, 0, 0 };
-		int[] deltay = new int[] { 0, 0, 1, -1, 0, 0 };
-		int[] deltaz = new int[] { 0, 0, 0, 0, 1, -1 };
+		int[] deltax = { 1, -1, 0, 0, 0, 0 };
+		int[] deltay = { 0, 0, 1, -1, 0, 0 };
+		int[] deltaz = { 0, 0, 0, 0, 1, -1 };
 		for (int i = 0; i < space.length; i++) {
 			for (int j = 0; j < space[0].length; j++) {
 				for (int k = 0; k < space[0][0].length; k++) {

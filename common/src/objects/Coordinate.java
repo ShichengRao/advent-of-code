@@ -29,6 +29,11 @@ public class Coordinate {
         this.y = y;
     }
 
+    /** The coordinate one step away in that direction. */
+    public Coordinate move(Direction direction) {
+        return new Coordinate(x + direction.dx, y + direction.dy, z);
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;

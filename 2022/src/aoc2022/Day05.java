@@ -10,7 +10,7 @@ import java.util.Stack;
 public class Day05 extends DayTemplate {
 
 	public String solve(boolean part1, Scanner in) throws FileNotFoundException {
-		String answer = "";
+		StringBuilder answer = new StringBuilder();
 		List<Stack<String>> stacks = new ArrayList<>();
 		boolean phase1 = true;
 		while (in.hasNext()) {
@@ -25,7 +25,7 @@ public class Day05 extends DayTemplate {
 					}
 					continue;
 				}
-				if (stacks.size() == 0) {
+				if (stacks.isEmpty()) {
 					for (int i = 0; i < line.length(); i += 4) {
 						stacks.add(new Stack<String>());
 					}
@@ -57,8 +57,8 @@ public class Day05 extends DayTemplate {
 			}
 		}
 		for (int i = 0; i < stacks.size(); i++) {
-			answer += stacks.get(i).pop();
+			answer.append(stacks.get(i).pop());
 		}
-		return answer;
+		return answer.toString();
 	}
 }

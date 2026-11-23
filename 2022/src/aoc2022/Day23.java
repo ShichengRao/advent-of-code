@@ -21,8 +21,10 @@ public class Day23 extends DayTemplate {
 		}
 		if (part1) {
 			helper2(elves, 10);
-			int maxx, maxy, minx, miny;
-			maxx = maxy = minx = miny = -1;
+			int maxx = -1;
+			int maxy = -1;
+			int minx = -1;
+			int miny = -1;
 			for (int i = 0; i < elves.size(); i++) {
 				maxx = (maxx == -1) ? elves.get(i).x : Math.max(maxx, elves.get(i).x);
 				maxy = (maxy == -1) ? elves.get(i).y : Math.max(maxy, elves.get(i).y);
@@ -38,8 +40,10 @@ public class Day23 extends DayTemplate {
 			}
 		} else {
 			answer = helper2(elves, 2000);
-			int maxx, maxy, minx, miny;
-			maxx = maxy = minx = miny = -1;
+			int maxx = -1;
+			int maxy = -1;
+			int minx = -1;
+			int miny = -1;
 			for (int i = 0; i < elves.size(); i++) {
 				maxx = (maxx == -1) ? elves.get(i).x : Math.max(maxx, elves.get(i).x);
 				maxy = (maxy == -1) ? elves.get(i).y : Math.max(maxy, elves.get(i).y);
@@ -80,8 +84,8 @@ public class Day23 extends DayTemplate {
 		for (Coord2 elf : elves) {
 			grid[elf.x + 100][elf.y + 100] = 1;
 		}
-		int[] xneighbors = new int[] { -1, 0, 1, -1, 1, -1, 0, 1 };
-		int[] yneighbors = new int[] { -1, -1, -1, 0, 0, 1, 1, 1 };
+		int[] xneighbors = { -1, 0, 1, -1, 1, -1, 0, 1 };
+		int[] yneighbors = { -1, -1, -1, 0, 0, 1, 1, 1 };
 		for (int i = 0; i < rounds; i++) {
 			Map<Coord2, Integer> freq = new HashMap<>();
 			boolean allNull = true;

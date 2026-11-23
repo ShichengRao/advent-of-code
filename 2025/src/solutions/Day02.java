@@ -84,10 +84,9 @@ public class Day02 extends DayTemplate {
                 // 10^len - 1 is the largest len-digit number
                 BigInteger rangeEnd = high.min(BigInteger.TEN.pow(len).subtract(BigInteger.ONE));
 
-                if (rangeStart.compareTo(rangeEnd) > 0) continue;
+                if (rangeStart.compareTo(rangeEnd) > 0 || (part1 && len % 2 == 1)) continue;
 
                 if (part1) {
-                    if (len % 2 == 1) continue;
                     BigInteger divisor = getPart1Divisor(len);
                     answer = answer.add(sumArithmeticSequence(rangeStart, rangeEnd, divisor));
                 } else {

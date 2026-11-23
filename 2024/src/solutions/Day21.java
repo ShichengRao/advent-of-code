@@ -311,7 +311,7 @@ public class Day21 extends DayTemplate {
             for(String remaining: shortestNumericHelper(new Coordinate(a.x - 1, a.y), b)){
                 results.add(possibility1 + remaining);
             }
-            if(!(a.x == 3 ) || !(a.y == 1)){
+            if(a.x != 3 || a.y != 1){
                 String possibility2 = "<";
                 for(String remaining: shortestNumericHelper(new Coordinate(a.x, a.y - 1), b)){
                     results.add(possibility2 + remaining);
@@ -339,7 +339,7 @@ public class Day21 extends DayTemplate {
             }
         }
         if(a.x < b.x && a.y < b.y){
-            if(!(a.x == 2 ) || !(a.y == 0)) {
+            if(a.x != 2 || a.y != 0) {
                 String possibility1 = "v";
                 for (String remaining : shortestNumericHelper(new Coordinate(a.x + 1, a.y), b)) {
                     results.add(possibility1 + remaining);
