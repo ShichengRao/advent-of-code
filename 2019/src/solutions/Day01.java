@@ -4,7 +4,7 @@ import src.meta.DayTemplate;
 
 import java.util.*;
 
-public class Day01 implements DayTemplate {
+public class Day01 extends DayTemplate {
 
     public String[] fullSolve(Scanner in) {
         return null;

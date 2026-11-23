@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class Day13 implements DayTemplate {
+public class Day13 extends DayTemplate {
 
     List<String> tmp = new ArrayList<>();
     List<Pattern> patterns = new ArrayList<>();

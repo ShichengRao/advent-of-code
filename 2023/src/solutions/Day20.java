@@ -4,7 +4,7 @@ import src.meta.DayTemplate;
 
 import java.util.*;
 
-public class Day20 implements DayTemplate {
+public class Day20 extends DayTemplate {
 
     protected static final String BROADCASTER = "broadcaster";
 

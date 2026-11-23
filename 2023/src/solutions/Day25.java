@@ -9,7 +9,7 @@ import java.util.*;
  * Did not do the low level optimizations, but roughly followed the high level solution
  */
 
-public class Day25 implements DayTemplate {
+public class Day25 extends DayTemplate {
 
     @Override
     public String[] fullSolve(Scanner in) {

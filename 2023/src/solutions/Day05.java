@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class Day05 implements DayTemplate {
+public class Day05 extends DayTemplate {
 
     long[] seeds;
     List<RangeMap> rangeMaps;

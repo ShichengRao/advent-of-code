@@ -4,7 +4,7 @@ import src.meta.DayTemplate;
 
 import java.util.*;
 
-public class Day18 implements DayTemplate {
+public class Day18 extends DayTemplate {
 
     int max;
 

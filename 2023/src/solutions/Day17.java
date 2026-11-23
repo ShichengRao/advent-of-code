@@ -3,7 +3,7 @@ package src.solutions;
 import src.meta.DayTemplate;
 import java.util.*;
 
-public class Day17 implements DayTemplate {
+public class Day17 extends DayTemplate {
 
     int[][][] debug;
 

@@ -4,7 +4,7 @@ import src.meta.DayTemplate;
 
 import java.util.*;
 
-public class Day14 implements DayTemplate {
+public class Day14 extends DayTemplate {
 
     Map<Integer, Integer> states;
     int[][] stones;

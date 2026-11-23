@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class Day11 implements DayTemplate {
+public class Day11 extends DayTemplate {
     
     List<Coordinate> galaxies;
     List<Integer> emptyV;

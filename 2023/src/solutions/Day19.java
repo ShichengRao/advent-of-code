@@ -4,7 +4,7 @@ import src.meta.DayTemplate;
 
 import java.util.*;
 
-public class Day19 implements DayTemplate {
+public class Day19 extends DayTemplate {
 
     protected static final String[] allCategories = new String[]{"x", "m", "a", "s"};
     Map<String, Workflow> workflows;

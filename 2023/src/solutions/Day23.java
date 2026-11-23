@@ -7,7 +7,7 @@ import java.util.*;
 
 //Heavily inspired by https://gist.github.com/Voltara/ae028b17ba5cd69fa9b8b912e41e853b
 
-public class Day23 implements DayTemplate {
+public class Day23 extends DayTemplate {
 
     Coordinate[][] nodeGrid = new Coordinate[6][6];
 

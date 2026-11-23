@@ -2,7 +2,7 @@ package src.meta;
 
 import java.util.Scanner;
 
-public interface DayTemplate {
+public abstract class DayTemplate {
 
     /**
      * Times execution of the solve method
@@ -11,7 +11,7 @@ public interface DayTemplate {
      * @param in    Param for data solve() will read.
      * @return Time in milliseconds (not nanoseconds) for execution of the method.
      */
-    default double timer(boolean part1, Scanner in) {
+    public double timer(boolean part1, Scanner in) {
         Long startTime = System.nanoTime();
         solve(part1, in);
         Long endTime = System.nanoTime();
@@ -24,13 +24,12 @@ public interface DayTemplate {
      * @param in    Param for data solve() will read.
      * @return Time in milliseconds (not nanoseconds) for execution of the method.
      */
-    default double dayTimer(Scanner in) {
+    public double dayTimer(Scanner in) {
         Long startTime = System.nanoTime();
         fullSolve(in);
         Long endTime = System.nanoTime();
         return (endTime - startTime) / 1000000.0;
     }
-
 
     /**
      * Main solving method.
@@ -40,7 +39,7 @@ public interface DayTemplate {
      * @param in    The solver will read data from this Scanner.
      * @return Returns answer in string format.
      */
-    String solve(boolean part1, Scanner in);
+    public abstract String solve(boolean part1, Scanner in);
 
     /**
      * Solves both parts of the day.
@@ -48,7 +47,7 @@ public interface DayTemplate {
      * @param in    The solver will read data from this Scanner.
      * @return Returns answer as a string array, with part 1 as index 0 and part 2 as index 1
      */
-    default String[] fullSolve(Scanner in) { return new String[2]; }
+    public String[] fullSolve(Scanner in) { return new String[2]; }
 
     /**
      * Some classes require additional, non code steps (e.g. judge an image output).
@@ -57,7 +56,7 @@ public interface DayTemplate {
      * @return By default, returns false.
      * Subclasses can override in exceptional cases.
      */
-    default boolean exclude() {
+    public boolean exclude() {
         return false;
     }
 }

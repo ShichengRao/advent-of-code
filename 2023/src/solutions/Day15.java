@@ -4,7 +4,7 @@ import src.meta.DayTemplate;
 
 import java.util.*;
 
-public class Day15 implements DayTemplate {
+public class Day15 extends DayTemplate {
 
     @Override
     public String[] fullSolve(Scanner in) {

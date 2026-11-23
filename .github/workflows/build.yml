@@ -23,7 +23,7 @@ jobs:
           status=0
           for y in 20[0-9][0-9]; do
             echo "::group::$y"
-            find "$y" -name '*.java' -not -path '*/tests/*' > "sources-$y.txt"
+            find "$y" common -name '*.java' -not -path '*/tests/*' > "sources-$y.txt"
             javac -nowarn -XDsuppressNotes -encoding UTF-8 -d "build/$y" "@sources-$y.txt" || status=1
             echo "::endgroup::"
           done

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class Day05 implements src.meta.DayTemplate  {
+public class Day05 extends src.meta.DayTemplate  {
     public String[] fullSolve(Scanner in) {
         return null;
     }

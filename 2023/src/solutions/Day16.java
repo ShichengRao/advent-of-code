@@ -5,7 +5,7 @@ import src.objects.Coordinate;
 
 import java.util.*;
 
-public class Day16 implements DayTemplate {
+public class Day16 extends DayTemplate {
 
     int[][] dirChart;
     int[] xs = new int[]{-1, 1, 0, 0};

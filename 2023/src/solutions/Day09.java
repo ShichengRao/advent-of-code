@@ -7,7 +7,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 
-public class Day09 implements DayTemplate {
+public class Day09 extends DayTemplate {
 
     @Override
     public String[] fullSolve(Scanner in) {

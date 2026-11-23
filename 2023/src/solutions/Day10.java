@@ -5,7 +5,7 @@ import src.objects.Coordinate;
 
 import java.util.*;
 
-public class Day10 implements DayTemplate {
+public class Day10 extends DayTemplate {
 
     List<List<String>> grid;
     int[][] distances;

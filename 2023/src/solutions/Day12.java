@@ -4,7 +4,7 @@ import src.meta.DayTemplate;
 
 import java.util.*;
 
-public class Day12 implements DayTemplate {
+public class Day12 extends DayTemplate {
     int[] possibleCount;
     List<String> conditionRecords;
     List<int[]> vals;

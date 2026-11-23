@@ -4,8 +4,9 @@
 # ./aoc new <year> <day>              create a day from the template (and the year, if new)
 #
 # Only the day's file and what it references get compiled (javac -sourcepath), so
-# unfinished days elsewhere in the repo never block a run. Inputs live in
-# <year>/data/dayNN.txt, which is gitignored.
+# unfinished days elsewhere in the repo never block a run. Code shared by every year
+# (src.meta, src.objects) lives in common/. Inputs live in <year>/data/dayNN.txt,
+# which is gitignored.
 set -euo pipefail
 ROOT=$(cd "$(dirname "$0")" && pwd)
 
@@ -41,21 +42,16 @@ run_day() { # <year> <day> <parts> <golf 0|1>
 
   out="$ROOT/out/$y"
   mkdir -p "$out"
-  javac -nowarn -XDsuppressNotes -encoding UTF-8 -d "$out" -sourcepath "$srcroot" -cp "$out" \
+  javac -nowarn -XDsuppressNotes -encoding UTF-8 -d "$out" -sourcepath "$srcroot:$ROOT/common" -cp "$out" \
     "$ROOT/tools/Run.java" "$file"
   echo "== $y day $n$([ "$golf" = 1 ] && echo ' (golfed)')"
   (cd "$ROOT/$y" && java -cp "$out" Run "$cls" "$input" "$parts" $([ "$golf" = 1 ] && echo golf))
 }
 
 new_day() { # <year> <day>
-  local y=$1 n=$((10#$2)) dd file latest
+  local y=$1 n=$((10#$2)) dd file
   dd=$(printf %02d "$n")
-  if [ ! -d "$ROOT/$y" ]; then
-    latest=$(find "$ROOT" -maxdepth 1 -type d -name '20[0-9][0-9]' | sort | tail -1)
-    mkdir -p "$ROOT/$y/src/solutions" "$ROOT/$y/data"
-    cp -R "$latest/src/meta" "$latest/src/objects" "$ROOT/$y/src/"
-    echo "created $y/ with meta/ and objects/ copied from $(basename "$latest")"
-  fi
+  [ -d "$ROOT/$y" ] || echo "created $y/ (shared code comes from common/)"
   mkdir -p "$ROOT/$y/src/solutions" "$ROOT/$y/data"
   file="$ROOT/$y/src/solutions/Day$dd.java"
   [ -e "$file" ] && { echo "${file#"$ROOT"/} already exists" >&2; exit 1; }

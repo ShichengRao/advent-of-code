@@ -6,7 +6,7 @@ import src.objects.Coordinate;
 import java.util.*;
 
 
-public class Day24 implements DayTemplate {
+public class Day24 extends DayTemplate {
 
     int[] maxes = new int[3];
     int[] mins = new int[3];

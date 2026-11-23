@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class Day01 implements DayTemplate {
+public class Day01 extends DayTemplate {
 
     @Override
     public String[] fullSolve(Scanner in){

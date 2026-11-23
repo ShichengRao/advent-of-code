@@ -365,13 +365,18 @@ I write up my solves on [Substack](https://abnew123.substack.com/) and
 ./aoc 2024 5 2        # part 2 only
 ./aoc 2024 5 --golf   # the golfed version, where there is one
 ./aoc 2024 all        # every day of a year
-./aoc new 2026 1      # start a new day (creates the year from the latest one)
+./aoc new 2026 1      # start a new day (and the year, if it's new)
 ```
 
 `./aoc` compiles only the day you ask for and the classes it uses, so a half-finished day
 elsewhere never blocks a run. It needs JDK 21 or newer. Inputs go in
 `<year>/data/dayNN.txt` and are not committed, per the
 [AoC FAQ](https://adventofcode.com/about#faq_copying).
+
+In IntelliJ, each year has a "YEAR MasterSolver" run configuration. Set the days and
+options in its program arguments: `[day ...] [--part=1|2] [--time] [--full] [--check] [--golf]`.
+`--time` times every day, `--full` times whole days through `fullSolve()`, and `--check`
+compares against `data/expectedResults.txt`.
 
 ## Layout
 
@@ -385,7 +390,11 @@ elsewhere never blocks a run. It needs JDK 21 or newer. Inputs go in
 | [2021](2021) | 15 | |
 | [2019](2019) | 3 | |
 
-Each year keeps the layout it was written in. The history of the old per-year
+Code shared by the years (`DayTemplate`, `Utils`, `Coordinate`, `MasterSolver`, `TimerRunner`)
+lives once in [common](common), in the same `src.meta` and `src.objects` packages the years
+import. 2021 and 2022 predate it and keep their own small template in their own package.
+
+Each year otherwise keeps the layout it was written in. The history of the old per-year
 repositories is preserved under each year's folder, so for example
 `git log --follow 2024/src/solutions/Day01.java` goes back to the first commit.
 
