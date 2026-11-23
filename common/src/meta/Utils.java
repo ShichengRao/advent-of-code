@@ -2,12 +2,20 @@ package src.meta;
 
 import src.objects.Coordinate;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Queue;
 import java.util.Scanner;
+import java.util.function.IntPredicate;
 import java.util.function.ToIntFunction;
+import java.util.regex.Pattern;
 
 public class Utils {
+    /** A whole number; a minus sign counts only when it doesn't follow a digit, so "3-5" is 3 and 5. */
+    private static final Pattern NUMBER = Pattern.compile("(?<!\\d)-?\\d+");
+
     private Utils() {
     }
 
@@ -153,6 +161,85 @@ public class Utils {
         return x1 * y2 - x2 * y1;
     }
 
-    //TODO: kruskal's algorithm, prim's algorithm, dijkstras, bfs, dfs
+    /** Every line of the input, blank ones included. */
+    public static List<String> readLines(Scanner in) {
+        List<String> lines = new ArrayList<>();
+        while (in.hasNextLine()) {
+            lines.add(in.nextLine());
+        }
+        return lines;
+    }
+
+    /** The input's lines, in groups separated by blank lines. */
+    public static List<List<String>> readSections(Scanner in) {
+        List<List<String>> sections = new ArrayList<>();
+        List<String> section = new ArrayList<>();
+        while (in.hasNextLine()) {
+            String line = in.nextLine();
+            if (!line.isBlank()) {
+                section.add(line);
+            } else if (!section.isEmpty()) {
+                sections.add(section);
+                section = new ArrayList<>();
+            }
+        }
+        if (!section.isEmpty()) {
+            sections.add(section);
+        }
+        return sections;
+    }
+
+    /**
+     * Every whole number in the text, in order. A minus sign counts only when it doesn't
+     * follow a digit, so "x=-3" gives -3 but the range "3-5" gives 3 and 5.
+     */
+    public static long[] longs(String text) {
+        return NUMBER.matcher(text).results().mapToLong(m -> Long.parseLong(m.group())).toArray();
+    }
+
+    /** Like {@link #longs(String)}, for numbers that fit in an int. */
+    public static int[] ints(String text) {
+        return NUMBER.matcher(text).results().mapToInt(m -> Integer.parseInt(m.group())).toArray();
+    }
+
+    /**
+     * Where c first appears, as x = column and y = row (the layout buildGrid uses), or null if
+     * it doesn't appear.
+     */
+    public static Coordinate find(List<String> lines, char c) {
+        for (int y = 0; y < lines.size(); y++) {
+            int x = lines.get(y).indexOf(c);
+            if (x >= 0) {
+                return new Coordinate(x, y);
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Breadth-first search from start, moving up, down, left and right onto cells whose value
+     * passes open. Returns the number of steps to each cell, or -1 where it can't be reached.
+     */
+    public static int[][] distances(int[][] grid, Coordinate start, IntPredicate open) {
+        int[][] distance = new int[grid.length][grid[0].length];
+        for (int[] column : distance) {
+            Arrays.fill(column, -1);
+        }
+        distance[start.x][start.y] = 0;
+        Queue<Coordinate> queue = new ArrayDeque<>();
+        queue.add(start);
+        while (!queue.isEmpty()) {
+            Coordinate current = queue.poll();
+            for (Coordinate next : getNeighbors(current.x, current.y, grid)) {
+                if (distance[next.x][next.y] == -1 && open.test(grid[next.x][next.y])) {
+                    distance[next.x][next.y] = distance[current.x][current.y] + 1;
+                    queue.add(next);
+                }
+            }
+        }
+        return distance;
+    }
+
+    //TODO: kruskal's algorithm, prim's algorithm, dijkstras, dfs
 
 }
